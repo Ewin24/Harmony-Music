@@ -81,13 +81,13 @@ class AlbumArtNLyrics extends StatelessWidget {
                                     end: Alignment.bottomCenter,
                                     colors: [
                                       Theme.of(context)
-                                          .primaryColor
+                                          .colorScheme.primary
                                           .withValues(alpha: 0.90),
                                       Colors.transparent,
                                       Colors.transparent,
                                       Colors.transparent,
                                       Theme.of(context)
-                                          .primaryColor
+                                          .colorScheme.primary
                                           .withValues(alpha: 0.90)
                                     ],
                                     stops: const [0, 0.2, 0.5, 0.8, 1],

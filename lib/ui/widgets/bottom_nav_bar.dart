@@ -11,7 +11,7 @@ class BottomNavBar extends StatelessWidget {
     return Obx(() => NavigationBar(
             onDestinationSelected: homeScreenController.onBottonBarTabSelected,
             selectedIndex: homeScreenController.tabIndex.toInt(),
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             indicatorColor: Theme.of(context).colorScheme.secondary,
             labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
             destinations: [

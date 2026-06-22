@@ -52,7 +52,7 @@ class StandardPlayer extends StatelessWidget {
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withValues(alpha: 0.8),
+                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
                   ),
                 ),
               ),
@@ -66,10 +66,10 @@ class StandardPlayer extends StatelessWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Theme.of(context).primaryColor,
-                        Theme.of(context).primaryColor,
-                        Theme.of(context).primaryColor.withValues(alpha: 0.4),
-                        Theme.of(context).primaryColor.withValues(alpha: 0),
+                        Theme.of(context).colorScheme.primary,
+                        Theme.of(context).colorScheme.primary,
+                        Theme.of(context).colorScheme.primary.withValues(alpha: 0.4),
+                        Theme.of(context).colorScheme.primary.withValues(alpha: 0),
                       ],
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,

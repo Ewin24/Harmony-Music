@@ -80,7 +80,7 @@ class GesturePlayer extends StatelessWidget {
                 right: 20),
             child: Container(
               decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
+                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(10)),
               constraints: const BoxConstraints(maxWidth: 500),
               height: 142,
@@ -116,7 +116,7 @@ class GesturePlayer extends StatelessWidget {
                                             .titleMedium!
                                             .copyWith(
                                                 color: Theme.of(context)
-                                                    .primaryColor
+                                                    .colorScheme.primary
                                                     .complementaryColor),
                                       ),
                                     );
@@ -142,7 +142,7 @@ class GesturePlayer extends StatelessWidget {
                                             .titleSmall!
                                             .copyWith(
                                                 color: Theme.of(context)
-                                                    .primaryColor
+                                                    .colorScheme.primary
                                                     .complementaryColor,
                                                 fontWeight: FontWeight.normal),
                                       ),
@@ -248,7 +248,7 @@ class GesturePlayer extends StatelessWidget {
                               .titleSmall!
                               .copyWith(
                                   color: Theme.of(context)
-                                      .primaryColor
+                                      .colorScheme.primary
                                       .complementaryColor),
                           progress: controller.progressBarStatus.value.current,
                           total: controller.progressBarStatus.value.total,

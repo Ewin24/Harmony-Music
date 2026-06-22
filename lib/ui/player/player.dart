@@ -52,7 +52,7 @@ class Player extends StatelessWidget {
               }
             },
             child: Container(
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.primary,
                 child: Column(
                   children: [
                     SizedBox(
@@ -97,7 +97,7 @@ class Player extends StatelessWidget {
                               BoxShadow(blurRadius: 5, color: Colors.black54)
                             ],
                             color: Theme.of(context)
-                                .primaryColor
+                                .colorScheme.primary
                                 .withValues(alpha: 0.5)),
                         height: 60 + Get.mediaQuery.padding.bottom,
                         child: Align(
