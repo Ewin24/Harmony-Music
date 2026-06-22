@@ -9,6 +9,24 @@
 # Harmony Music
 A cross platform app for music streaming made with Flutter(Android, Windows, linux).
 
+# Getting Started
+
+New contributor? First-time build? Head over to the setup guide:
+
+👉 [`docs/setup.md`](docs/setup.md) — complete Windows setup with Flutter SDK,
+Android SDK, JDK install, dependency resolution, and build verification.
+
+Quick reference after your environment is ready:
+
+```bash
+flutter pub get
+flutter analyze
+flutter build apk --debug
+```
+
+See also [`CONTRIBUTING.md`](CONTRIBUTING.md) for contribution workflow, code
+style, and commit conventions.
+
 # Features
 * Ability to play song from Ytube/Ytube Music.
 * Song cache while playing
