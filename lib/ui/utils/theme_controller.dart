@@ -295,7 +295,7 @@ class ThemeController extends GetxController {
   MaterialColor _createMaterialColor(Color color) {
     List strengths = <double>[.05];
     Map<int, Color> swatch = {};
-    final int r = color.red, g = color.green, b = color.blue;
+    final int r = (color.r * 255.0).round().clamp(0, 255), g = (color.g * 255.0).round().clamp(0, 255), b = (color.b * 255.0).round().clamp(0, 255);
 
     for (int i = 1; i < 10; i++) {
       strengths.add(0.1 * i);
@@ -318,9 +318,9 @@ class ThemeController extends GetxController {
       Future.delayed(
           const Duration(milliseconds: 350),
           () async => await platform.invokeMethod('setTitleBarColor', {
-                'r': color.red,
-                'g': color.green,
-                'b': color.blue,
+                'r': (color.r * 255.0).round().clamp(0, 255),
+                'g': (color.g * 255.0).round().clamp(0, 255),
+                'b': (color.b * 255.0).round().clamp(0, 255),
               }));
     } on PlatformException catch (e) {
       printERROR("Failed to set title bar color: ${e.message}");
@@ -331,10 +331,10 @@ class ThemeController extends GetxController {
 extension ComplementaryColor on Color {
   Color get complementaryColor => getComplementaryColor(this);
   Color getComplementaryColor(Color color) {
-    int r = 255 - color.red;
-    int g = 255 - color.green;
-    int b = 255 - color.blue;
-    return Color.fromARGB(color.alpha, r, g, b);
+    int r = 255 - (color.r * 255.0).round().clamp(0, 255);
+    int g = 255 - (color.g * 255.0).round().clamp(0, 255);
+    int b = 255 - (color.b * 255.0).round().clamp(0, 255);
+    return Color.fromARGB((color.a * 255.0).round().clamp(0, 255), r, g, b);
   }
 }
 
@@ -365,10 +365,10 @@ extension HexColor on Color {
 
   /// Prefixes a hash sign if [leadingHashSign] is set to `true` (default is `true`).
   String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
-      '${alpha.toRadixString(16).padLeft(2, '0')}'
-      '${red.toRadixString(16).padLeft(2, '0')}'
-      '${green.toRadixString(16).padLeft(2, '0')}'
-      '${blue.toRadixString(16).padLeft(2, '0')}';
+      '${(a * 255.0).round().clamp(0, 255).toRadixString(16).padLeft(2, '0')}'
+      '${(r * 255.0).round().clamp(0, 255).toRadixString(16).padLeft(2, '0')}'
+      '${(g * 255.0).round().clamp(0, 255).toRadixString(16).padLeft(2, '0')}'
+      '${(b * 255.0).round().clamp(0, 255).toRadixString(16).padLeft(2, '0')}';
 }
 
 enum ThemeType {
