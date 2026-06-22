@@ -1,0 +1,15 @@
+{
+  "dart.flutterSdkPath": "D:\\flutter\\flutter",
+  "dart.sdkPath": "D:\\flutter\\flutter\\bin\\cache\\dart-sdk",
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "Dart-Code.dart-code",
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.rulers": [80, 100]
+  },
+  "files.associations": {
+    "*.dart": "dart"
+  }
+}
