@@ -17,7 +17,7 @@ class CombinedLibrary extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 85,
-        backgroundColor: Theme.of(context).canvasColor,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
         actions: [
           Obx(() => (settingscrnController.isLinkedWithPiped.isTrue)

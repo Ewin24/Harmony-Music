@@ -613,7 +613,7 @@ class PlaylistScreenController extends PlaylistAlbumScreenControllerBase
   void _showProgressDialog(BuildContext context, String title) {
     Get.dialog(
       AlertDialog(
-        backgroundColor: Theme.of(context).cardColor,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),

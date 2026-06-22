@@ -596,7 +596,7 @@ class LibraryPlaylistsController extends GetxController
   void _showImportProgressDialog(BuildContext context) {
     Get.dialog(
       AlertDialog(
-        backgroundColor: Theme.of(context).cardColor,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),

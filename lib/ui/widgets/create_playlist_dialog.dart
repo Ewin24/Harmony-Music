@@ -120,7 +120,7 @@ class CreateNRenamePlaylistPopup extends StatelessWidget {
                                     ? "rename".tr
                                     : "create".tr,
                             style:
-                                TextStyle(color: Theme.of(context).canvasColor),
+                                TextStyle(color: Theme.of(context).colorScheme.surface),
                           ),
                         ),
                         onTap: () async {

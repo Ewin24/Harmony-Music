@@ -145,7 +145,7 @@ class BackupDialog extends StatelessWidget {
                                     ? "close".tr
                                     : "backup".tr,
                                 style: TextStyle(
-                                    color: Theme.of(context).canvasColor),
+                                    color: Theme.of(context).colorScheme.surface),
                               ),
                             ),
                           ),

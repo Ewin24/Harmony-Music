@@ -57,7 +57,7 @@ class ThemeController extends GetxController {
               : null,
           value);
     }
-    setWindowsTitleBarColor(themedata.value!.scaffoldBackgroundColor);
+    setWindowsTitleBarColor(themedata.value!.colorScheme.surface);
   }
 
   void setTheme(ImageProvider imageProvider, String songId) async {
@@ -83,7 +83,7 @@ class ThemeController extends GetxController {
         titleColorSwatch: _createMaterialColor(textColor.value));
     currentSongId = songId;
     Hive.box('appPrefs').put("themePrimaryColor", (primaryColor.value!).value);
-    setWindowsTitleBarColor(themedata.value!.scaffoldBackgroundColor);
+    setWindowsTitleBarColor(themedata.value!.colorScheme.surface);
   }
 
   ThemeData _createThemeData(MaterialColor? primarySwatch, ThemeType themeType,

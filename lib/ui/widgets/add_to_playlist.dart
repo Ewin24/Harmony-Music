@@ -95,7 +95,7 @@ class AddToPlaylist extends StatelessWidget {
                 ),
               Container(
                 decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorLight,
+                    color: Theme.of(context).colorScheme.primaryContainer,
                     borderRadius: BorderRadius.circular(10)),
                 height: 250,
                 //color: Colors.green,

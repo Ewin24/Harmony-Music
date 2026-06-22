@@ -118,7 +118,7 @@ class SettingsScreen extends StatelessWidget {
                     trailing: Obx(
                       () => DropdownButton(
                         menuMaxHeight: Get.height - 250,
-                        dropdownColor: Theme.of(context).cardColor,
+                        dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                         underline: const SizedBox.shrink(),
                         style: Theme.of(context).textTheme.titleSmall,
                         value: settingsController.currentAppLanguageCode.value,
@@ -151,7 +151,7 @@ class SettingsScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyMedium),
                       trailing: Obx(
                         () => DropdownButton(
-                          dropdownColor: Theme.of(context).cardColor,
+                          dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                           underline: const SizedBox.shrink(),
                           value: settingsController.playerUi.value,
                           items: [
@@ -236,7 +236,7 @@ class SettingsScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyMedium),
                       trailing: Obx(
                         () => DropdownButton(
-                          dropdownColor: Theme.of(context).cardColor,
+                          dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                           underline: const SizedBox.shrink(),
                           value: settingsController.noOfHomeScreenContent.value,
                           items: ([3, 5, 7, 9, 11])
@@ -340,7 +340,7 @@ class SettingsScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium),
                     trailing: Obx(
                       () => DropdownButton(
-                        dropdownColor: Theme.of(context).cardColor,
+                        dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                         underline: const SizedBox.shrink(),
                         value: settingsController.streamingQuality.value,
                         items: [
@@ -529,7 +529,7 @@ class SettingsScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium),
                     trailing: Obx(
                       () => DropdownButton(
-                        dropdownColor: Theme.of(context).cardColor,
+                        dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                         underline: const SizedBox.shrink(),
                         value: settingsController.downloadingFormat.value,
                         items: const [
