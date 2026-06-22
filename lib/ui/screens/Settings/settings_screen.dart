@@ -727,23 +727,29 @@ class ThemeSelectorDialog extends StatelessWidget {
               ),
             ),
           ),
-          radioWidget(
-            label: "dynamic".tr,
-            controller: settingsController,
-            value: ThemeType.dynamic,
+          RadioGroup<ThemeType>(
+            groupValue: settingsController.themeModetype.value,
+            onChanged: settingsController.onThemeChange,
+            child: Column(children: [
+              radioWidget(
+                label: "dynamic".tr,
+                controller: settingsController,
+                value: ThemeType.dynamic,
+              ),
+              radioWidget(
+                  label: "systemDefault".tr,
+                  controller: settingsController,
+                  value: ThemeType.system),
+              radioWidget(
+                  label: "dark".tr,
+                  controller: settingsController,
+                  value: ThemeType.dark),
+              radioWidget(
+                  label: "light".tr,
+                  controller: settingsController,
+                  value: ThemeType.light),
+            ]),
           ),
-          radioWidget(
-              label: "systemDefault".tr,
-              controller: settingsController,
-              value: ThemeType.system),
-          radioWidget(
-              label: "dark".tr,
-              controller: settingsController,
-              value: ThemeType.dark),
-          radioWidget(
-              label: "light".tr,
-              controller: settingsController,
-              value: ThemeType.light),
           Align(
               alignment: Alignment.centerRight,
               child: InkWell(
@@ -784,25 +790,29 @@ class DiscoverContentSelectorDialog extends StatelessWidget {
           SizedBox(
             height: 180,
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  radioWidget(
-                      label: "quickpicks".tr,
-                      controller: settingsController,
-                      value: "QP"),
-                  radioWidget(
-                      label: "topmusicvideos".tr,
-                      controller: settingsController,
-                      value: "TMV"),
-                  radioWidget(
-                      label: "trending".tr,
-                      controller: settingsController,
-                      value: "TR"),
-                  radioWidget(
-                      label: "basedOnLast".tr,
-                      controller: settingsController,
-                      value: "BOLI"),
-                ],
+              child: RadioGroup<String>(
+                groupValue: settingsController.discoverContentType.value,
+                onChanged: settingsController.onContentChange,
+                child: Column(
+                  children: [
+                    radioWidget(
+                        label: "quickpicks".tr,
+                        controller: settingsController,
+                        value: "QP"),
+                    radioWidget(
+                        label: "topmusicvideos".tr,
+                        controller: settingsController,
+                        value: "TMV"),
+                    radioWidget(
+                        label: "trending".tr,
+                        controller: settingsController,
+                        value: "TR"),
+                    radioWidget(
+                        label: "basedOnLast".tr,
+                        controller: settingsController,
+                        value: "BOLI"),
+                  ],
+                ),
               ),
             ),
           ),
@@ -836,14 +846,7 @@ Widget radioWidget(
             Navigator.of(Get.context!).pop();
           }
         },
-        leading: Radio(
-            value: value,
-            groupValue: value.runtimeType == ThemeType
-                ? controller.themeModetype.value
-                : controller.discoverContentType.value,
-            onChanged: value.runtimeType == ThemeType
-                ? controller.onThemeChange
-                : controller.onContentChange),
+        leading: Radio(value: value),
         title: Text(label),
       ));
 }
