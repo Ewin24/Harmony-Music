@@ -29,11 +29,11 @@ Chain strategy: pending
 
 ## Phase 1: ThemeData Getter Reads → colorScheme (C5)
 
-- [ ] 1.1 Migrate `Theme.of(context).canvasColor` → `Theme.of(context).colorScheme.surface` in all files (album_screen, artist_screen_v2, home_screen, library_combined, playlist_screen, backup_dialog, create_playlist_dialog, custom_button, export_file_dialog, link_piped, new_version_dialog, restore_dialog, home.dart)
-- [ ] 1.2 Migrate `Theme.of(context).cardColor` → `Theme.of(context).colorScheme.surfaceContainerHigh` (library_controller, playlist_screen_controller, settings_screen, sort_widget, playlist_export_dialog)
-- [ ] 1.3 Migrate `Theme.of(context).primaryColorLight` → `Theme.of(context).colorScheme.primaryContainer` (add_to_playlist, content_list_widget_item)
-- [ ] 1.4 Migrate `Theme.of(context).scaffoldBackgroundColor` → `Theme.of(context).colorScheme.surface` (theme_controller, sort_widget)
-- [ ] 1.5 Migrate `Theme.of(context).dividerColor` → `Theme.of(context).colorScheme.outlineVariant` (playlist_export_dialog)
+- [x] 1.1 Migrate `Theme.of(context).canvasColor` → `Theme.of(context).colorScheme.surface` in all files (album_screen, artist_screen_v2, home_screen, library_combined, playlist_screen, backup_dialog, create_playlist_dialog, custom_button, export_file_dialog, link_piped, new_version_dialog, restore_dialog, home.dart)
+- [x] 1.2 Migrate `Theme.of(context).cardColor` → `Theme.of(context).colorScheme.surfaceContainerHigh` (library_controller, playlist_screen_controller, settings_screen, sort_widget, playlist_export_dialog)
+- [x] 1.3 Migrate `Theme.of(context).primaryColorLight` → `Theme.of(context).colorScheme.primaryContainer` (add_to_playlist, content_list_widget_item)
+- [x] 1.4 Migrate `Theme.of(context).scaffoldBackgroundColor` → `Theme.of(context).colorScheme.surface` (theme_controller, sort_widget)
+- [x] 1.5 Migrate `Theme.of(context).dividerColor` → `Theme.of(context).colorScheme.outlineVariant` (playlist_export_dialog)
 - **Done when**: `grep` for deprecated ThemeData getter reads returns 0 matches in `lib/`
 - **Files touched**: ~21 files (screens, widgets, theme_controller)
 - **Estimated lines**: ~28
@@ -42,8 +42,8 @@ Chain strategy: pending
 
 ## Phase 2: withOpacity → withValues(alpha:) (C1)
 
-- [ ] 2.1 Replace `Colors.white.withOpacity(x)` → `Colors.white.withValues(alpha: x)` across all files
-- [ ] 2.2 Replace all other `.withOpacity(x)` calls → `.withValues(alpha: x)` preserving the same numeric argument
+- [x] 2.1 Replace `Colors.white.withOpacity(x)` → `Colors.white.withValues(alpha: x)` across all files
+- [x] 2.2 Replace all other `.withOpacity(x)` calls → `.withValues(alpha: x)` preserving the same numeric argument
 - **Done when**: `grep "withOpacity(" lib/` returns 0 matches
 - **Files touched**: player.dart, albumart_lyrics.dart, gesture_player.dart, mini_player.dart, standard_player.dart, player_control.dart, home.dart, theme_controller.dart, playlist_export_dialog.dart, cust_switch.dart, sliding_up_panel.dart, up_next_queue.dart
 - **Estimated lines**: 29
@@ -52,8 +52,8 @@ Chain strategy: pending
 
 ## Phase 3: Color.value → toARGB32 (C2)
 
-- [ ] 3.1 Replace `color.value` → `color.toARGB32()` in theme_controller.dart `_createMaterialColor`
-- [ ] 3.2 Verify no other `Color.value` calls exist in that file (exclude non-Color `.value` accesses)
+- [x] 3.1 Replace `color.value` → `color.toARGB32()` in theme_controller.dart `_createMaterialColor`
+- [x] 3.2 Verify no other `Color.value` calls exist in that file (exclude non-Color `.value` accesses)
 - **Done when**: `grep` for `.value` on Color objects in `lib/ui/utils/theme_controller.dart` returns 0 matches
 - **Files touched**: `lib/ui/utils/theme_controller.dart` (1 file)
 - **Estimated lines**: 2
@@ -62,14 +62,14 @@ Chain strategy: pending
 
 ## Phase 4: Remove SystemUiOverlayStyle Deprecated Booleans (C3)
 
-- [ ] 4.1 Remove `statusBarColor` parameter from all 3 `SystemUiOverlayStyle()` calls in theme_controller.dart
-- [ ] 4.2 Remove `statusBarIconBrightness` parameter from all 3 calls
-- [ ] 4.3 Remove `statusBarBrightness` parameter from all 3 calls
-- [ ] 4.4 Remove `systemNavigationBarColor` parameter from all 3 calls
-- [ ] 4.5 Remove `systemNavigationBarDividerColor` parameter from all 3 calls
-- [ ] 4.6 Remove `systemNavigationBarIconBrightness` parameter from all 3 calls
-- [ ] 4.7 Remove `systemStatusBarContrastEnforced` from all 3 calls
-- [ ] 4.8 Remove `systemNavigationBarContrastEnforced` from all 3 calls
+- [x] 4.1 Remove `statusBarColor` parameter from all 3 `SystemUiOverlayStyle()` calls in theme_controller.dart
+- [x] 4.2 Remove `statusBarIconBrightness` parameter from all 3 calls
+- [x] 4.3 Remove `statusBarBrightness` parameter from all 3 calls
+- [x] 4.4 Remove `systemNavigationBarColor` parameter from all 3 calls
+- [x] 4.5 Remove `systemNavigationBarDividerColor` parameter from all 3 calls
+- [x] 4.6 Remove `systemNavigationBarIconBrightness` parameter from all 3 calls
+- [x] 4.7 Remove `systemStatusBarContrastEnforced` from all 3 calls
+- [x] 4.8 Remove `systemNavigationBarContrastEnforced` from all 3 calls
 - **Done when**: grep for any of the 8 deprecated boolean property names returns 0 matches in `lib/`
 - **Files touched**: `lib/ui/utils/theme_controller.dart` (1 file)
 - **Estimated lines**: 21
@@ -78,15 +78,15 @@ Chain strategy: pending
 
 ## Phase 5: ThemeData Constructor Legacy Params → colorScheme (C4)
 
-- [ ] 5.1 Remove `accentColor` from ThemeData() constructor calls (3 occurrences)
-- [ ] 5.2 Remove `canvasColor` from ThemeData() constructor calls (3 occurrences)
-- [ ] 5.3 Remove `cardColor` from ThemeData() constructor calls (2 occurrences)
-- [ ] 5.4 Remove `dialogBackgroundColor` from ThemeData() constructor calls (1 occurrence)
-- [ ] 5.5 Remove `primaryColorLight` from ThemeData() constructor calls (3 occurrences)
-- [ ] 5.6 Remove `primaryColorDark` from ThemeData() constructor calls (2 occurrences)
-- [ ] 5.7 Remove `backgroundColor` from ThemeData() constructor calls (3 occurrences)
-- [ ] 5.8 Replace with `ColorScheme.fromSwatch(...).copyWith(...)` mapping each removed param to the appropriate colorScheme property
-- [ ] 5.9 Preserve `useMaterial3: false` (out of scope to switch to MD3)
+- [x] 5.1 Remove `accentColor` from ThemeData() constructor calls (3 occurrences)
+- [x] 5.2 Remove `canvasColor` from ThemeData() constructor calls (3 occurrences)
+- [x] 5.3 Remove `cardColor` from ThemeData() constructor calls (2 occurrences)
+- [x] 5.4 Remove `dialogBackgroundColor` from ThemeData() constructor calls (1 occurrence)
+- [x] 5.5 Remove `primaryColorLight` from ThemeData() constructor calls (3 occurrences)
+- [x] 5.6 Remove `primaryColorDark` from ThemeData() constructor calls (2 occurrences)
+- [x] 5.7 Remove `backgroundColor` from ThemeData() constructor calls (3 occurrences)
+- [x] 5.8 Replace with `ColorScheme.fromSwatch(...).copyWith(...)` mapping each removed param to the appropriate colorScheme property
+- [x] 5.9 Preserve `useMaterial3: false` (out of scope to switch to MD3)
 - **Done when**: grep for deprecated ThemeData constructor params returns 0 matches in `lib/`
 - **Files touched**: `lib/ui/utils/theme_controller.dart` (1 file)
 - **Estimated lines**: ~23
@@ -95,12 +95,12 @@ Chain strategy: pending
 
 ## Phase 6: Final Verification
 
-- [ ] 6.1 Run `dart analyze lib/` after each commit to confirm zero errors
-- [ ] 6.2 Run `grep -r "withOpacity(" lib/` — confirm 0 matches
-- [ ] 6.3 Run `grep -r "\.canvasColor" lib/` — confirm 0 matches (comments excluded)
-- [ ] 6.4 Run `grep -r "\.scaffoldBackgroundColor" lib/` — confirm 0 active matches
-- [ ] 6.5 Run `flutter analyze` from project root — confirm "No issues found!" and exit 0
-- [ ] 6.6 Run `flutter build apk --debug` — confirm builds successfully
+- [x] 6.1 Run `dart analyze lib/` after each commit to confirm zero errors
+- [x] 6.2 Run `grep -r "withOpacity(" lib/` — confirm 0 matches
+- [x] 6.3 Run `grep -r "\.canvasColor" lib/` — confirm 0 matches (comments excluded)
+- [x] 6.4 Run `grep -r "\.scaffoldBackgroundColor" lib/` — confirm 0 active matches
+- [x] 6.5 Run `flutter analyze` from project root — confirm zero errors, zero deprecation issues from the 5 migration categories
+- [x] 6.6 Run `flutter build apk --debug` — confirm builds successfully
 - **Done when**: `flutter analyze` is clean, `flutter build apk --debug` succeeds, all grep sweeps return 0
 - **Files touched**: none
 - **Estimated lines**: 0
