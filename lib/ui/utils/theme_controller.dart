@@ -96,18 +96,15 @@ class ThemeController extends GetxController {
           useMaterial3: false,
           primaryColor: primarySwatch![500],
           colorScheme: ColorScheme.fromSwatch(
-              accentColor: primarySwatch[200],
               brightness: Brightness.dark,
-              backgroundColor: primarySwatch[700],
-              primarySwatch: primarySwatch),
-          //accentColor: primarySwatch[200],
-          dialogBackgroundColor: primarySwatch[700],
-          cardColor: primarySwatch[600],
-          primaryColorLight: primarySwatch[400],
-          primaryColorDark: primarySwatch[700],
-          //secondaryHeaderColor: primarySwatch[50],
-          canvasColor: primarySwatch[700],
-          //scaffoldBackgroundColor: primarySwatch[700],
+              primarySwatch: primarySwatch,
+          ).copyWith(
+              secondary: primarySwatch[200],
+              surface: primarySwatch[700],
+              surfaceContainerHigh: primarySwatch[600],
+              primaryContainer: primarySwatch[400],
+              onPrimaryContainer: primarySwatch[700],
+          ),
           bottomSheetTheme: BottomSheetThemeData(
               backgroundColor: primarySwatch[600],
               modalBarrierColor: primarySwatch[400]),
@@ -167,12 +164,14 @@ class ThemeController extends GetxController {
       final baseTheme = ThemeData(
           useMaterial3: false,
           brightness: Brightness.dark,
-          canvasColor: Colors.black,
           primaryColor: Colors.black,
-          primaryColorDark: Colors.black,
-          primaryColorLight: Colors.grey[850],
           colorScheme: ColorScheme.fromSwatch(
-              accentColor: Colors.grey[700], brightness: Brightness.dark),
+              brightness: Brightness.dark,
+          ).copyWith(
+              secondary: Colors.grey[700],
+              surface: Colors.black,
+              primaryContainer: Colors.grey[850],
+          ),
           progressIndicatorTheme: ProgressIndicatorThemeData(
               color: Colors.grey[700], linearTrackColor: Colors.white),
           textTheme: const TextTheme(
@@ -231,14 +230,15 @@ class ThemeController extends GetxController {
       final baseTheme = ThemeData(
           useMaterial3: false,
           brightness: Brightness.light,
-          canvasColor: Colors.white,
-          colorScheme: ColorScheme.fromSwatch(
-              accentColor: Colors.grey[400],
-              backgroundColor: Colors.white,
-              cardColor: Colors.white,
-              brightness: Brightness.light),
           primaryColor: Colors.white,
-          primaryColorLight: Colors.grey[300],
+          colorScheme: ColorScheme.fromSwatch(
+              brightness: Brightness.light,
+          ).copyWith(
+              secondary: Colors.grey[400],
+              surface: Colors.white,
+              surfaceContainerHigh: Colors.white,
+              primaryContainer: Colors.grey[300],
+          ),
           progressIndicatorTheme: ProgressIndicatorThemeData(
               linearTrackColor: Colors.grey[700], color: Colors.grey[400]),
           textTheme: TextTheme(
