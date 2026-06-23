@@ -11,12 +11,17 @@ import '../utils/debug_logger.dart';
 ///   [timestamp] [INFO ] [HTTP] ──> GET  https://example.com/api/v1/x?a=b
 ///   [timestamp] [DEBUG] [HTTP]     body: {"key":"value"}
 ///   [timestamp] [INFO ] [HTTP] <── 200 (412ms, 1.4 KB)
-///   [timestamp] [DEBUG] [HTTP]     body preview: {"items":[...]}
+///   [timestamp] [DEBUG] [HTTP]     body: {…pretty JSON, fully expanded…}
+///
+/// Bodies are passed through to [DebugLogger.dump] with `fullDump: true`
+/// so they are pretty-printed (2-space indent) and **never** truncated.
+/// The previous behaviour truncated responses to 1200 characters and then
+/// tried to re-parse the broken JSON, which produced a single-line `toString`
+/// blob instead of a readable tree.
 class HttpLoggingInterceptor extends Interceptor {
   HttpLoggingInterceptor({this.tag = 'HTTP'});
 
   final String tag;
-  static const _maxBodyChars = 1200;
   static const _stopwatchKey = '__debug_logger_started_at';
 
   @override
@@ -26,7 +31,8 @@ class HttpLoggingInterceptor extends Interceptor {
     DebugLogger.info(tag, '──> ${options.method.padRight(5)} $uri');
     final data = options.data;
     if (data != null) {
-      DebugLogger.dump(tag, _normalizeForLog(data), label: 'request body');
+      DebugLogger.dump(tag, _normalizeForLog(data),
+          label: 'request body', fullDump: true);
     }
     handler.next(options);
   }
@@ -43,11 +49,8 @@ class HttpLoggingInterceptor extends Interceptor {
     );
     final data = response.data;
     if (data != null) {
-      DebugLogger.dump(
-        tag,
-        _normalizeForLog(data),
-        label: 'response body preview',
-      );
+      DebugLogger.dump(tag, _normalizeForLog(data),
+          label: 'response body', fullDump: true);
     }
     handler.next(response);
   }
@@ -96,23 +99,16 @@ class HttpLoggingInterceptor extends Interceptor {
     }
   }
 
-  /// Make a Dart object safe to log: encode bytes/FormData and try JSON for
-  /// everything else, falling back to `toString()`. Truncates long values.
+  /// Lightly shape a body for logging. We deliberately do **not** truncate:
+  /// the caller passes `fullDump: true` so [DebugLogger] emits the entire
+  /// pretty-printed tree.
   Object? _normalizeForLog(Object? data) {
-    try {
-      if (data is List<int>) {
-        return '<binary ${data.length} bytes>';
-      }
-      if (data is FormData) {
-        return '<form data fields=${data.fields.length} files=${data.files.length}>';
-      }
-      final encoded = json.encode(data);
-      if (encoded.length <= _maxBodyChars) return json.decode(encoded);
-      return json.decode(encoded.substring(0, _maxBodyChars));
-    } catch (_) {
-      final s = data?.toString() ?? 'null';
-      if (s.length <= _maxBodyChars) return s;
-      return '${s.substring(0, _maxBodyChars)}... [truncated]';
+    if (data is List<int>) {
+      return '<binary ${data.length} bytes>';
     }
+    if (data is FormData) {
+      return '<form data fields=${data.fields.length} files=${data.files.length}>';
+    }
+    return data;
   }
 }

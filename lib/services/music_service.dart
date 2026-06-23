@@ -623,6 +623,12 @@ class MusicServices extends getx.GetxService {
       return searchResults;
     }
 
+    // Dump the full response once so we can inspect the actual shape of
+    // `sectionListRenderer.contents` and the wrapper structure. The HTTP
+    // interceptor already logged a preview, but this one is the source of
+    // truth for debugging parsing issues.
+    DebugLogger.dump(_logTag, response, label: 'full search response', fullDump: true);
+
     dynamic results;
 
     if ((response['contents']).containsKey('tabbedSearchResultsRenderer')) {
@@ -697,6 +703,33 @@ class MusicServices extends getx.GetxService {
       );
       return searchResults;
     }
+
+    // Structural summary of every element in `sectionListRenderer.contents`.
+    // This makes it obvious what the API actually returns — what kind of
+    // renderer each element is, and what its title (if any) is.
+    final structureBuf = StringBuffer('sectionListRenderer.contents structure:\n');
+    for (var i = 0; i < results.length; i++) {
+      final entry = results[i];
+      if (entry is Map) {
+        final keys = entry.keys.map((e) => e.toString()).toList();
+        // Try to find any title in this element for context.
+        String? title;
+        for (final k in keys) {
+          final v = entry[k];
+          if (v is Map) {
+            final t = nav(v, title_text);
+            if (t != null) {
+              title = t.toString();
+              break;
+            }
+          }
+        }
+        structureBuf.writeln('  [$i] keys=$keys title=${title ?? "(none)"}');
+      } else {
+        structureBuf.writeln('  [$i] (not a Map) type=${entry.runtimeType}');
+      }
+    }
+    DebugLogger.info(_logTag, structureBuf.toString().trimRight());
 
     String? type;
 
@@ -868,7 +901,7 @@ class MusicServices extends getx.GetxService {
   ///     { "musicShelfRenderer": { "title": {...}, "contents": [...] } }
   /// ]}}
   /// ```
-  (String?, Map?)? _unwrapShelf(Map res) {
+  (String?, Map?)? _unwrapShelf(Map res, {int depth = 0}) {
     const knownTypes = [
       'musicShelfRenderer',
       'musicCardShelfRenderer',
@@ -898,13 +931,36 @@ class MusicServices extends getx.GetxService {
     if (res.containsKey('itemSectionRenderer')) {
       final outer = asMap(res['itemSectionRenderer']);
       final inner = outer?['contents'];
+      DebugLogger.debug(
+        _logTag,
+        '_unwrapShelf(depth=$depth): itemSectionRenderer found, '
+        'innerType=${inner.runtimeType} innerLen=${inner is List ? inner.length : "n/a"}',
+      );
       if (inner is List) {
-        for (final candidate in inner) {
+        for (var i = 0; i < inner.length; i++) {
+          final candidate = inner[i];
           if (candidate is Map) {
-            final unwrapped = _unwrapShelf(candidate);
+            final ckeys = candidate.keys.map((e) => e.toString()).toList();
+            DebugLogger.debug(
+              _logTag,
+              '_unwrapShelf(depth=$depth): candidate[$i] keys=$ckeys',
+            );
+            final unwrapped = _unwrapShelf(candidate, depth: depth + 1);
             if (unwrapped != null) return unwrapped;
+          } else {
+            DebugLogger.debug(
+              _logTag,
+              '_unwrapShelf(depth=$depth): candidate[$i] is not a Map '
+              '(${candidate.runtimeType})',
+            );
           }
         }
+      } else if (outer != null) {
+        DebugLogger.debug(
+          _logTag,
+          '_unwrapShelf(depth=$depth): itemSectionRenderer.contents is not a List, '
+          'outer.keys=${outer.keys.toList()}',
+        );
       }
     }
     return null;
