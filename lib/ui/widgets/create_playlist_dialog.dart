@@ -54,33 +54,29 @@ class CreateNRenamePlaylistPopup extends StatelessWidget {
               ),
               if (isPipedLinked && !renamePlaylist)
                 Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Radio(
-                              value: "piped",
-                              groupValue:
-                                  librPlstCntrller.playlistCreationMode.value,
-                              onChanged: librPlstCntrller.changeCreationMode),
-                          Text("Piped".tr),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                              value: "local",
-                              groupValue:
-                                  librPlstCntrller.playlistCreationMode.value,
-                              onChanged: librPlstCntrller.changeCreationMode),
-                          Text("local".tr),
-                        ],
-                      )
-                    ],
+                  () => RadioGroup<String>(
+                    groupValue: librPlstCntrller.playlistCreationMode.value,
+                    onChanged: librPlstCntrller.changeCreationMode,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const Radio(value: "piped"),
+                            Text("Piped".tr),
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Row(
+                          children: [
+                            const Radio(value: "local"),
+                            Text("local".tr),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ModifiedTextField(
@@ -120,7 +116,7 @@ class CreateNRenamePlaylistPopup extends StatelessWidget {
                                     ? "rename".tr
                                     : "create".tr,
                             style:
-                                TextStyle(color: Theme.of(context).canvasColor),
+                                TextStyle(color: Theme.of(context).colorScheme.surface),
                           ),
                         ),
                         onTap: () async {

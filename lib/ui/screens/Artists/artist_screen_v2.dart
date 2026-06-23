@@ -18,7 +18,7 @@ class ArtistScreenBN extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           toolbarHeight: 85,
-          backgroundColor: Theme.of(context).canvasColor,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           leading: Padding(
             padding: const EdgeInsets.only(top: 25.0),
             child: IconButton(

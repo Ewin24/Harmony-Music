@@ -22,7 +22,7 @@ class ProceedButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
           child: Text(
             buttonText,
-            style: TextStyle(color: Theme.of(context).canvasColor),
+            style: TextStyle(color: Theme.of(context).colorScheme.surface),
           ),
         ),
       ),

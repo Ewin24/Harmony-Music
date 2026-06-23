@@ -69,13 +69,13 @@ class AlbumScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Theme.of(context).canvasColor,
+                                      color: Theme.of(context).colorScheme.surface,
                                       spreadRadius: 200,
                                       blurRadius: 100,
                                       offset: Offset(-size.height, 0),
                                     ),
                                     BoxShadow(
-                                      color: Theme.of(context).canvasColor,
+                                      color: Theme.of(context).colorScheme.surface,
                                       spreadRadius: 200,
                                       blurRadius: 100,
                                       offset: Offset(

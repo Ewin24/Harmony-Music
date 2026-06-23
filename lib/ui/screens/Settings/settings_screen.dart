@@ -118,7 +118,7 @@ class SettingsScreen extends StatelessWidget {
                     trailing: Obx(
                       () => DropdownButton(
                         menuMaxHeight: Get.height - 250,
-                        dropdownColor: Theme.of(context).cardColor,
+                        dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                         underline: const SizedBox.shrink(),
                         style: Theme.of(context).textTheme.titleSmall,
                         value: settingsController.currentAppLanguageCode.value,
@@ -151,7 +151,7 @@ class SettingsScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyMedium),
                       trailing: Obx(
                         () => DropdownButton(
-                          dropdownColor: Theme.of(context).cardColor,
+                          dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                           underline: const SizedBox.shrink(),
                           value: settingsController.playerUi.value,
                           items: [
@@ -236,10 +236,10 @@ class SettingsScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyMedium),
                       trailing: Obx(
                         () => DropdownButton(
-                          dropdownColor: Theme.of(context).cardColor,
+                          dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                           underline: const SizedBox.shrink(),
                           value: settingsController.noOfHomeScreenContent.value,
-                          items: ([3, 5, 7, 9, 11])
+                          items: ([5, 7, 9, 11, 15])
                               .map((e) =>
                                   DropdownMenuItem(value: e, child: Text("$e")))
                               .toList(),
@@ -340,7 +340,7 @@ class SettingsScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium),
                     trailing: Obx(
                       () => DropdownButton(
-                        dropdownColor: Theme.of(context).cardColor,
+                        dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                         underline: const SizedBox.shrink(),
                         value: settingsController.streamingQuality.value,
                         items: [
@@ -529,7 +529,7 @@ class SettingsScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium),
                     trailing: Obx(
                       () => DropdownButton(
-                        dropdownColor: Theme.of(context).cardColor,
+                        dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                         underline: const SizedBox.shrink(),
                         value: settingsController.downloadingFormat.value,
                         items: const [
@@ -727,23 +727,29 @@ class ThemeSelectorDialog extends StatelessWidget {
               ),
             ),
           ),
-          radioWidget(
-            label: "dynamic".tr,
-            controller: settingsController,
-            value: ThemeType.dynamic,
+          RadioGroup<ThemeType>(
+            groupValue: settingsController.themeModetype.value,
+            onChanged: settingsController.onThemeChange,
+            child: Column(children: [
+              radioWidget(
+                label: "dynamic".tr,
+                controller: settingsController,
+                value: ThemeType.dynamic,
+              ),
+              radioWidget(
+                  label: "systemDefault".tr,
+                  controller: settingsController,
+                  value: ThemeType.system),
+              radioWidget(
+                  label: "dark".tr,
+                  controller: settingsController,
+                  value: ThemeType.dark),
+              radioWidget(
+                  label: "light".tr,
+                  controller: settingsController,
+                  value: ThemeType.light),
+            ]),
           ),
-          radioWidget(
-              label: "systemDefault".tr,
-              controller: settingsController,
-              value: ThemeType.system),
-          radioWidget(
-              label: "dark".tr,
-              controller: settingsController,
-              value: ThemeType.dark),
-          radioWidget(
-              label: "light".tr,
-              controller: settingsController,
-              value: ThemeType.light),
           Align(
               alignment: Alignment.centerRight,
               child: InkWell(
@@ -784,25 +790,29 @@ class DiscoverContentSelectorDialog extends StatelessWidget {
           SizedBox(
             height: 180,
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  radioWidget(
-                      label: "quickpicks".tr,
-                      controller: settingsController,
-                      value: "QP"),
-                  radioWidget(
-                      label: "topmusicvideos".tr,
-                      controller: settingsController,
-                      value: "TMV"),
-                  radioWidget(
-                      label: "trending".tr,
-                      controller: settingsController,
-                      value: "TR"),
-                  radioWidget(
-                      label: "basedOnLast".tr,
-                      controller: settingsController,
-                      value: "BOLI"),
-                ],
+              child: RadioGroup<String>(
+                groupValue: settingsController.discoverContentType.value,
+                onChanged: settingsController.onContentChange,
+                child: Column(
+                  children: [
+                    radioWidget(
+                        label: "quickpicks".tr,
+                        controller: settingsController,
+                        value: "QP"),
+                    radioWidget(
+                        label: "topmusicvideos".tr,
+                        controller: settingsController,
+                        value: "TMV"),
+                    radioWidget(
+                        label: "trending".tr,
+                        controller: settingsController,
+                        value: "TR"),
+                    radioWidget(
+                        label: "basedOnLast".tr,
+                        controller: settingsController,
+                        value: "BOLI"),
+                  ],
+                ),
               ),
             ),
           ),
@@ -836,14 +846,7 @@ Widget radioWidget(
             Navigator.of(Get.context!).pop();
           }
         },
-        leading: Radio(
-            value: value,
-            groupValue: value.runtimeType == ThemeType
-                ? controller.themeModetype.value
-                : controller.discoverContentType.value,
-            onChanged: value.runtimeType == ThemeType
-                ? controller.onThemeChange
-                : controller.onContentChange),
+        leading: Radio(value: value),
         title: Text(label),
       ));
 }

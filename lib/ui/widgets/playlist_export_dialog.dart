@@ -161,7 +161,7 @@ class _ExportButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).cardColor,
+      color: Theme.of(context).colorScheme.surfaceContainerHigh,
       borderRadius: BorderRadius.circular(10),
       child: InkWell(
         onTap: onTap,
@@ -170,7 +170,7 @@ class _ExportButton extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             border: Border.all(
-              color: Theme.of(context).dividerColor.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.2),
             ),
             borderRadius: BorderRadius.circular(10),
           ),
@@ -223,12 +223,12 @@ class _SplitExportButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).cardColor,
+      color: Theme.of(context).colorScheme.surfaceContainerHigh,
       borderRadius: BorderRadius.circular(10),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: Theme.of(context).dividerColor.withOpacity(0.2),
+            color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.2),
           ),
           borderRadius: BorderRadius.circular(10),
         ),
@@ -278,7 +278,7 @@ class _SplitExportButton extends StatelessWidget {
               VerticalDivider(
                 width: 1,
                 thickness: 1,
-                color: Theme.of(context).dividerColor.withOpacity(0.2),
+                color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.2),
               ),
               // Copy button part (20%)
               Expanded(
