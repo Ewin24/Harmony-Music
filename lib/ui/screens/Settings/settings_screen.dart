@@ -239,7 +239,7 @@ class SettingsScreen extends StatelessWidget {
                           dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                           underline: const SizedBox.shrink(),
                           value: settingsController.noOfHomeScreenContent.value,
-                          items: ([3, 5, 7, 9, 11])
+                          items: ([5, 7, 9, 11, 15])
                               .map((e) =>
                                   DropdownMenuItem(value: e, child: Text("$e")))
                               .toList(),
