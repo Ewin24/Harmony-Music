@@ -7,6 +7,7 @@ import 'package:get/get.dart' as getx;
 import 'package:hive/hive.dart';
 
 import '/models/album.dart';
+import '/models/artist.dart';
 import '/services/utils.dart';
 import '../utils/helper.dart';
 import 'constant.dart';
@@ -669,15 +670,29 @@ class MusicServices extends getx.GetxService {
         final mixedItems = parseSearchResults(itemResults,
             ['artist', 'playlist', 'song', 'video', 'station'], type, category);
         if (filter == null) {
+          final shelfTitle = nav(res, ['musicShelfRenderer', ...title_text]);
           for (var item in mixedItems) {
-            final itemType = item.runtimeType == MediaItem
-                ? (item.artist.split(",")[0]) + "s"
-                : "${item.runtimeType}s";
-            if (searchResults.containsKey(itemType) &&
-                (searchResults[itemType]).length < 3) {
-              (searchResults[itemType] as List).add(item);
-            } else if (!searchResults.containsKey(itemType)) {
-              searchResults[itemType] = [item];
+            String? itemType;
+            if (shelfTitle == 'Top result' || shelfTitle == null) {
+              // For Top result or shelves without title, bucket by actual item type
+              if (item is Artist) {
+                itemType = 'Artists';
+              } else if (item is Album) {
+                itemType = 'Albums';
+              } else if (item is MediaItem) {
+                // Default to Songs; could be refined via videoType
+                itemType = 'Songs';
+              }
+            } else {
+              itemType = shelfTitle;
+            }
+            if (itemType != null && itemType.isNotEmpty) {
+              if (searchResults.containsKey(itemType) &&
+                  (searchResults[itemType] as List).length < 10) {
+                (searchResults[itemType] as List).add(item);
+              } else if (!searchResults.containsKey(itemType)) {
+                searchResults[itemType] = [item];
+              }
             }
           }
         } else {

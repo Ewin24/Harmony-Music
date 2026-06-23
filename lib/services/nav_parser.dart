@@ -817,7 +817,7 @@ dynamic parseSearchResult(Map<String, dynamic> data,
   if ((['artist', 'album', 'playlist']).contains(resultType)) {
     searchResult['browseId'] = nav(data, navigation_browse_id);
     if (searchResult['browseId'] == null) {
-      return {};
+      return;
     }
   }
 
