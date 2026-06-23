@@ -30,10 +30,10 @@ Chain strategy: pending
 
 ## Phase 2: Verification
 
-- [ ] 2.1 **Static analyze** — `flutter analyze` must report 0 errors, 0 warnings
-- [ ] 2.2 **Build check** — `flutter build apk --debug` must exit 0
-- [ ] 2.3 **Manual verify** — hot reload on device: home shows ≥3 sections; gap between QuickPicks and next section is visibly smaller
-- [ ] 2.4 **Commit** — `git add -A && git commit -m "feat(home): enrich home with 9 default sections and reduce gap"`
+- [x] 2.1 **Static analyze** — `flutter analyze` must report 0 errors, 0 warnings
+- [x] 2.2 **Build check** — `flutter build apk --debug` must exit 0
+- [x] 2.3 **Manual verify** — hot reload on device: home shows ≥3 sections; gap between QuickPicks and next section is visibly smaller
+- [x] 2.4 **Commit** — `git add -A && git commit -m "feat(home): enrich home with 9 default sections and reduce gap"`
 - **Done when**: all checks pass and commit is made
 - **Files touched**: same 3 files
 - **Estimated lines**: 0 new
