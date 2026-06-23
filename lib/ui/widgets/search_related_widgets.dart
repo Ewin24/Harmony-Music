@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../screens/Search/search_result_screen_controller.dart';
+import '../../utils/debug_logger.dart';
 import '/models/album.dart';
 import '/models/artist.dart';
 import '/models/playlist.dart';
 import '/ui/widgets/content_list_widget.dart';
 import 'separate_tab_item_widget.dart';
+
+const _widgetLogTag = 'ResultWidget';
 
 class ResultWidget extends StatelessWidget {
   const ResultWidget({super.key, this.isv2Used = false});
@@ -58,38 +61,49 @@ class ResultWidget extends StatelessWidget {
   List<Widget> generateWidgetList(
       SearchResultScreenController searchResScrController) {
     List<Widget> list = [];
+    final trace = StringBuffer('generateWidgetList: ');
     for (dynamic item in searchResScrController.resultContent.entries) {
-      if (item.key == "Songs" || item.key == "Videos") {
-        list.add(SeparateTabItemWidget(
-          items: List<MediaItem>.from(item.value),
-          title: item.key,
-          isCompleteList: false,
-        ));
-      } else if (item.key == "Albums") {
-        list.add(ContentListWidget(
-          content: AlbumContent(
-              title: item.key, albumList: List<Album>.from(item.value)),
-          isHomeContent: false,
-        ));
-      }
-      else if (item.key.contains("playlist")) {
-        list.add(ContentListWidget(
-          content: PlaylistContent(
+      try {
+        if (item.key == "Songs" || item.key == "Videos") {
+          trace.write('[$item.key:${(item.value as List).length}]');
+          list.add(SeparateTabItemWidget(
+            items: List<MediaItem>.from(item.value),
             title: item.key,
-            playlistList: List<Playlist>.from(item.value),
-          ),
-          isHomeContent: false,
-        ));
-      }
-      else if (item.key == "Artists") {
-        list.add(SeparateTabItemWidget(
-          items: List<Artist>.from(item.value),
-          title: item.key,
-          isCompleteList: false,
-        ));
+            isCompleteList: false,
+          ));
+        } else if (item.key == "Albums") {
+          trace.write('[$item.key:${(item.value as List).length}]');
+          list.add(ContentListWidget(
+            content: AlbumContent(
+                title: item.key, albumList: List<Album>.from(item.value)),
+            isHomeContent: false,
+          ));
+        } else if (item.key.toString().contains("playlist")) {
+          trace.write('[$item.key:${(item.value as List).length}]');
+          list.add(ContentListWidget(
+            content: PlaylistContent(
+              title: item.key,
+              playlistList: List<Playlist>.from(item.value),
+            ),
+            isHomeContent: false,
+          ));
+        } else if (item.key == "Artists") {
+          trace.write('[$item.key:${(item.value as List).length}]');
+          list.add(SeparateTabItemWidget(
+            items: List<Artist>.from(item.value),
+            title: item.key,
+            isCompleteList: false,
+          ));
+        } else {
+          trace.write('[skip:${item.key}]');
+        }
+      } catch (e, st) {
+        DebugLogger.error(_widgetLogTag,
+            'failed to render entry key="${item.key}"', e, st);
+        trace.write('[error:${item.key}]');
       }
     }
-
+    DebugLogger.debug(_widgetLogTag, trace.toString());
     return list;
   }
 }

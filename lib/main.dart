@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:terminate_restart/terminate_restart.dart';
 
 import '/ui/screens/Search/search_screen_controller.dart';
+import '/utils/debug_logger.dart';
 import '/utils/get_localization.dart';
 import '/services/downloader.dart';
 import '/services/piped_service.dart';
@@ -24,6 +25,7 @@ import 'utils/update_check_flag_file.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  DebugLogger.info('Boot', 'Harmony Music starting up');
   await initHive();
   _setAppInitPrefs();
   startApplicationServices();
@@ -31,6 +33,7 @@ Future<void> main() async {
   WidgetsBinding.instance.addObserver(LifecycleHandler());
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   TerminateRestart.instance.initialize();
+  DebugLogger.info('Boot', 'runApp()');
   runApp(const MyApp());
 }
 

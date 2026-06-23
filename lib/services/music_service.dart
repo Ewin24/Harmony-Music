@@ -8,11 +8,16 @@ import 'package:hive/hive.dart';
 
 import '/models/album.dart';
 import '/models/artist.dart';
+import '/models/playlist.dart';
 import '/services/utils.dart';
+import '../utils/debug_logger.dart';
 import '../utils/helper.dart';
 import 'constant.dart';
 import 'continuations.dart';
+import 'http_logger.dart';
 import 'nav_parser.dart';
+
+const _logTag = 'Search';
 
 enum AudioQuality {
   Low,
@@ -47,6 +52,13 @@ class MusicServices extends getx.GetxService {
   }
 
   final dio = Dio();
+
+  MusicServices() {
+    // HTTP request/response logging is wired at construction so every call
+    // made by this service (search, browse, player, etc.) is captured.
+    dio.interceptors.add(HttpLoggingInterceptor());
+    DebugLogger.info('MusicServices', 'instance created, HTTP interceptor attached');
+  }
 
   Future<void> init() async {
     //check visitor id in data base, if not generate one , set lang code
@@ -559,6 +571,11 @@ class MusicServices extends getx.GetxService {
     data['context']['client']["hl"] = 'en';
     data['query'] = query;
 
+    DebugLogger.info(
+      _logTag,
+      'search() called: query="$query" filter=$filter scope=$scope limit=$limit',
+    );
+
     final Map<String, dynamic> searchResults = {};
     final filters = [
       'albums',
@@ -595,7 +612,14 @@ class MusicServices extends getx.GetxService {
 
     final response = (await _sendRequest("search", data)).data;
 
+    DebugLogger.info(
+      _logTag,
+      'response received: top-level keys=${response.keys.toList()} '
+      'hasContents=${response['contents'] != null}',
+    );
+
     if (response['contents'] == null) {
+      DebugLogger.warn(_logTag, 'response.contents is null, returning empty result');
       return searchResults;
     }
 
@@ -637,6 +661,11 @@ class MusicServices extends getx.GetxService {
         }
       }
 
+      DebugLogger.info(
+        _logTag,
+        'searchEndpoint chips: ${searchResults['searchEndpoint'].keys.toList()}',
+      );
+
       // now Featured playlists and community playlists are not coming in top results
       // so adding them in tab if not present
       if ((searchResults['searchEndpoint'])
@@ -655,26 +684,86 @@ class MusicServices extends getx.GetxService {
 
     results = nav(results, ['sectionListRenderer', 'contents']);
 
+    DebugLogger.info(
+      _logTag,
+      'sectionListRenderer.contents count=${results?.length}',
+    );
+
     if (results.length == 1 && results[0]['itemSectionRenderer'] != null) {
+      DebugLogger.warn(
+        _logTag,
+        'response is a single itemSectionRenderer (probably "no results"). '
+        'Returning empty map.',
+      );
       return searchResults;
     }
 
     String? type;
 
+    int shelfIndex = 0;
     for (var res in results) {
       String category;
-      if (res['musicShelfRenderer'] != null) {
-        dynamic itemResults = res['musicShelfRenderer']['contents'];
+      // YouTube Music has been observed to return several shelf renderer
+      // types in `sectionListRenderer.contents`:
+      //   - musicShelfRenderer         (regular list of items)
+      //   - musicCardShelfRenderer     (the "Top result" hero card)
+      //   - musicImmersiveCarouselShelfRenderer (immersive carousel)
+      //   - musicCarouselShelfRenderer (carousel of items)
+      //   - itemSectionRenderer        (a wrapper that often contains one of
+      //                                  the above as its first content)
+      // Any of them may carry the title and items we need. Detect the key
+      // dynamically instead of hardcoding `musicShelfRenderer`.
+      //
+      // `_unwrapShelf` also handles the `itemSectionRenderer` case: it
+      // returns the inner shelf map so callers can read `contents` and
+      // `title` from there.
+      final unwrapped = _unwrapShelf(res);
+      final shelfKey = unwrapped?.$1;
+      final shelfBody = unwrapped?.$2;
+      DebugLogger.debug(
+        _logTag,
+        'shelf[$shelfIndex] keys=${res.keys.toList()} resolved="$shelfKey"',
+      );
+      if (shelfKey == null || shelfBody == null) {
+        shelfIndex++;
+        continue;
+      }
+      if (shelfBody.isNotEmpty) {
+        dynamic itemResults = shelfBody['contents'];
         String? typeFilter = filter;
         category = "mixed"; // Just a default value
         final mixedItems = parseSearchResults(itemResults,
             ['artist', 'playlist', 'song', 'video', 'station'], type, category);
+
+        // Diagnostic: report what came back from the parser for this shelf.
+        final types = <String, int>{};
+        for (final i in mixedItems) {
+          types[i.runtimeType.toString()] =
+              (types[i.runtimeType.toString()] ?? 0) + 1;
+        }
+        DebugLogger.debug(
+          _logTag,
+          'shelf[$shelfIndex] parsed: total=${mixedItems.length} byType=$types',
+        );
+
         if (filter == null) {
-          final shelfTitle = nav(res, ['musicShelfRenderer', ...title_text]);
+          final shelfTitle = nav(shelfBody, title_text);
+          DebugLogger.info(
+            _logTag,
+            'shelf[$shelfIndex] title="$shelfTitle" '
+            'items=${mixedItems.length} bucketMode=${filter == null ? "unfiltered" : "filtered"}',
+          );
           for (var item in mixedItems) {
             String? itemType;
-            if (shelfTitle == 'Top result' || shelfTitle == null) {
-              // For Top result or shelves without title, bucket by actual item type
+            // "Top result" can show up as the literal string, as a null
+            // title, or — as we've seen in the wild — as the user's query
+            // echoed back as the title. Treat all three as "Top result" and
+            // bucket by actual item type.
+            final isTopResultShelf = shelfTitle == 'Top result' ||
+                shelfTitle == null ||
+                shelfTitle.isEmpty ||
+                shelfTitle == query;
+            if (isTopResultShelf) {
               if (item is Artist) {
                 itemType = 'Artists';
               } else if (item is Album) {
@@ -682,6 +771,11 @@ class MusicServices extends getx.GetxService {
               } else if (item is MediaItem) {
                 // Default to Songs; could be refined via videoType
                 itemType = 'Songs';
+              } else if (item is Playlist) {
+                // Top result playlist: drop it (no suitable home section).
+                continue;
+              } else {
+                itemType = '_orphan_${item.runtimeType}';
               }
             } else {
               itemType = shelfTitle;
@@ -696,15 +790,16 @@ class MusicServices extends getx.GetxService {
             }
           }
         } else {
-          category = nav(res, ['musicShelfRenderer', ...title_text]);
+          category = nav(shelfBody, title_text) ?? category;
           searchResults[category] = parseSearchResults(
-              res['musicShelfRenderer']['contents'],
+              shelfBody['contents'],
               ['artist', 'playlist', 'song', 'video', 'station'],
               type,
               category);
         }
         type = typeFilter?.substring(0, typeFilter.length - 1).toLowerCase();
       } else {
+        shelfIndex++;
         continue;
       }
 
@@ -718,7 +813,7 @@ class MusicServices extends getx.GetxService {
 
         if (searchResults.containsKey(category)) {
           final x = await getContinuations(
-              res['musicShelfRenderer'],
+              shelfBody,
               'musicShelfContinuation',
               limit - ((searchResults[category] as List).length),
               requestFunc,
@@ -738,13 +833,87 @@ class MusicServices extends getx.GetxService {
           ];
         }
       }
+      shelfIndex++;
     }
+
+    // Final summary: keys, item counts, and any orphan buckets.
+    final summary = <String, int>{};
+    var orphans = 0;
+    searchResults.forEach((k, v) {
+      if (k == 'searchEndpoint' || k == 'params') return;
+      final n = v is List ? v.length : 0;
+      summary[k] = n;
+      if (k.toString().startsWith('_orphan_')) orphans += n;
+    });
+    DebugLogger.info(
+      _logTag,
+      'search() returning searchResults keys=${searchResults.keys.toList()} '
+      'counts=$summary orphans=$orphans',
+    );
 
     return searchResults;
   }
 
-  Future<Map<String, dynamic>> getSearchContinuation(Map additionalParamsNext,
-      {int limit = 10}) async {
+  /// Resolves an element from `sectionListRenderer.contents` to the actual
+  /// shelf body that holds `title` and `contents`. Returns a `(key, body)`
+  /// pair where `key` is the renderer type (e.g. `musicShelfRenderer`) and
+  /// `body` is the inner Map the caller should read `title` and `contents`
+  /// from. Returns null if no shelf can be found.
+  ///
+  /// YouTube Music wraps many of its shelves in an `itemSectionRenderer`
+  /// container, so this function also unwraps one level of that:
+  ///
+  /// ```json
+  /// { "itemSectionRenderer": { "contents": [
+  ///     { "musicShelfRenderer": { "title": {...}, "contents": [...] } }
+  /// ]}}
+  /// ```
+  (String?, Map?)? _unwrapShelf(Map res) {
+    const knownTypes = [
+      'musicShelfRenderer',
+      'musicCardShelfRenderer',
+      'musicCarouselShelfRenderer',
+      'musicImmersiveCarouselShelfRenderer',
+      'musicPlaylistShelfRenderer',
+    ];
+    Map? asMap(Object? v) => v is Map ? v : null;
+
+    // Direct shelf renderers.
+    for (final k in knownTypes) {
+      if (res.containsKey(k)) {
+        final body = asMap(res[k]);
+        if (body != null) return (k, body);
+      }
+    }
+    // Last-resort fallback: any key ending with `ShelfRenderer` whose value
+    // is a Map. Covers future renderer renames.
+    for (final entry in res.entries) {
+      final ks = entry.key.toString();
+      if (ks.endsWith('ShelfRenderer')) {
+        final body = asMap(entry.value);
+        if (body != null) return (ks, body);
+      }
+    }
+    // itemSectionRenderer wrapper: look one level deeper.
+    if (res.containsKey('itemSectionRenderer')) {
+      final outer = asMap(res['itemSectionRenderer']);
+      final inner = outer?['contents'];
+      if (inner is List) {
+        for (final candidate in inner) {
+          if (candidate is Map) {
+            final unwrapped = _unwrapShelf(candidate);
+            if (unwrapped != null) return unwrapped;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  Future<Map<String, dynamic>> getSearchContinuation(
+    Map additionalParamsNext, {
+    int limit = 10,
+  }) async {
     final data = additionalParamsNext['data'];
     final type = additionalParamsNext['type'];
     final category = additionalParamsNext['category'];
