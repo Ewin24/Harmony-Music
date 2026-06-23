@@ -81,7 +81,7 @@ class ResultWidget extends StatelessWidget {
           isHomeContent: false,
         ));
       }
-      else if (item.key.contains("Artist")) {
+      else if (item.key == "Artists") {
         list.add(SeparateTabItemWidget(
           items: List<Artist>.from(item.value),
           title: item.key,
