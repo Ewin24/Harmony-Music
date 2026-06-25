@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-06-25T14:03:16.267504Z",
+  "endpoint": "https://music.youtube.com/youtubei/v1/browse?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+  "variant": "FEmusic_home",
+  "kind": "res",
+  "method": "POST",
+  "url": "https://music.youtube.com/youtubei/v1/browse?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+  "statusCode": 200,
+  "elapsedMs": 1295,
+  "bodySizeChars": 677371,
+  "bodyPreview": "{\n  \"responseContext\": {\n    \"serviceTrackingParams\": [\n      {\n        \"service\": \"GFEEDBACK\",\n        \"params\": [\n          {\n            \"key\": \"browse_id\",\n            \"value\": \"FEmusic_home\"\n    ..."
+}

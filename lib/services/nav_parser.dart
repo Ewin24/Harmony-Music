@@ -710,6 +710,119 @@ List<dynamic> parseSearchResults(List<dynamic> results,
       .toList();
 }
 
+/// Classify a single search-result item into the bucket key the widget
+/// expects. Uses the canonical `pageType` from
+/// `navigationEndpoint.browseEndpointContextMusicConfig.pageType` first,
+/// then falls back to the human-readable label in
+/// `flexColumns[1].runs[0].text`.
+///
+/// Returns one of:
+///   - "Songs"
+///   - "Videos"
+///   - "Albums"
+///   - "Artists"
+///   - "Featured playlists" (default for playlists; refined by [refinePlaylistBucket])
+///   - "Community playlists" (refined by [refinePlaylistBucket])
+///   - "Podcasts"
+///   - "Profiles"
+///   - "Episodes"
+///   - null if the item cannot be classified (caller should skip it)
+String? classifySearchResultBucket(Map<String, dynamic> data) {
+  // 1. Try canonical pageType.
+  final pageType = nav(
+    data,
+    [
+      'navigationEndpoint',
+      'browseEndpoint',
+      'browseEndpointContextSupportedConfigs',
+      'browseEndpointContextMusicConfig',
+      'pageType',
+    ],
+  );
+  switch (pageType) {
+    case 'MUSIC_PAGE_TYPE_ARTIST':
+      return 'Artists';
+    case 'MUSIC_PAGE_TYPE_ALBUM':
+      return 'Albums';
+    case 'MUSIC_PAGE_TYPE_PLAYLIST':
+      // Refined later by [refinePlaylistBucket] using `source` field.
+      return 'Featured playlists';
+    case 'MUSIC_PAGE_TYPE_PODCAST_SHOW_DETAIL_PAGE':
+      return 'Podcasts';
+    case 'MUSIC_PAGE_TYPE_USER_CHANNEL':
+      return 'Profiles';
+  }
+  // 2. Fallback: human-readable label in flexColumns[1].
+  final label = getItemText(data, 1);
+  switch (label?.toLowerCase()) {
+    case 'song':
+    case 'canción':
+      return 'Songs';
+    case 'video':
+    case 'vídeo':
+      return 'Videos';
+    case 'album':
+    case 'álbum':
+    case 'single':
+      return 'Albums';
+    case 'artist':
+    case 'artista':
+    case 'channel':
+    case 'canal':
+      return 'Artists';
+    case 'playlist':
+    case 'lista de reproducción':
+      return 'Featured playlists';
+    case 'podcast':
+      return 'Podcasts';
+    case 'profile':
+    case 'perfil':
+      return 'Profiles';
+    case 'episode':
+    case 'episodio':
+      return 'Episodes';
+  }
+  return null;
+}
+
+/// Refine the playlist bucket by inspecting the `source` field of the
+/// playlist's metadata. YouTube Music tags its own curated playlists as
+/// "FEATURED" and user-created ones as "COMMUNITY".
+String? refinePlaylistBucket(Map<String, dynamic> data) {
+  // The source field is usually in overlayButtons or in a header object.
+  // We probe a few known locations.
+  final candidates = [
+    nav(data, ['overlay', 'musicItemThumbnailOverlayRenderer', 'content']),
+    nav(data, ['musicResponsiveListItemRenderer', 'overlay']),
+    // Some items carry a `badges` array — community playlists often have a
+    // "Community playlist" badge.
+    data['badges'],
+  ];
+  for (final c in candidates) {
+    if (c is List) {
+      for (final entry in c) {
+        if (entry is Map) {
+          final text = nav(entry, [
+            'musicBadgeRenderer',
+            'accessibilityData',
+            'accessibilityData',
+            'label',
+          ]) ??
+              nav(entry, [
+                'musicBadgeRenderer',
+                'trackingParams',
+              ]) ??
+              entry.toString();
+          final s = text.toString().toLowerCase();
+          if (s.contains('community')) return 'Community playlists';
+          if (s.contains('featured')) return 'Featured playlists';
+        }
+      }
+    }
+  }
+  return null;
+}
+
 dynamic parseSearchResult(Map<String, dynamic> data,
     List<String> searchResultTypes, String? resultType, String? category) {
   if ((resultType != null && resultType.contains("playlist")) ||
@@ -724,9 +837,47 @@ dynamic parseSearchResult(Map<String, dynamic> data,
     resultType = (videoType == 'MUSIC_VIDEO_TYPE_ATV') ? 'song' : 'video';
   }
 
-  resultType = ((resultType == null)
-      ? getSearchResultType(getItemText(data, 1), searchResultTypes)
-      : resultType)!;
+  // Priority for type detection:
+  //   1. Explicit resultType passed in (caller knows what it wants).
+  //   2. videoType from the play button (song vs video).
+  //   3. Canonical pageType from navigationEndpoint (most reliable).
+  //   4. Human-readable label in flexColumns[1] (fallback).
+  if (resultType == null) {
+    final pageType = nav(
+      data,
+      [
+        'navigationEndpoint',
+        'browseEndpoint',
+        'browseEndpointContextSupportedConfigs',
+        'browseEndpointContextMusicConfig',
+        'pageType',
+      ],
+    );
+    if (pageType != null) {
+      switch (pageType) {
+        case 'MUSIC_PAGE_TYPE_ARTIST':
+          resultType = 'artist';
+          break;
+        case 'MUSIC_PAGE_TYPE_ALBUM':
+          resultType = 'album';
+          break;
+        case 'MUSIC_PAGE_TYPE_PLAYLIST':
+          resultType = 'playlist';
+          break;
+        case 'MUSIC_PAGE_TYPE_PODCAST_SHOW_DETAIL_PAGE':
+          resultType = 'station'; // closest to a "show" / podcast
+          break;
+        case 'MUSIC_PAGE_TYPE_USER_CHANNEL':
+          resultType = 'artist'; // user channels render as artists
+          break;
+        default:
+          // Fall through to text-based detection below.
+          break;
+      }
+    }
+    resultType ??= getSearchResultType(getItemText(data, 1), searchResultTypes);
+  }
+  resultType = resultType!;
   searchResult['resultType'] = resultType;
 
   if (resultType != 'artist') {
@@ -817,7 +968,7 @@ dynamic parseSearchResult(Map<String, dynamic> data,
   if ((['artist', 'album', 'playlist']).contains(resultType)) {
     searchResult['browseId'] = nav(data, navigation_browse_id);
     if (searchResult['browseId'] == null) {
-      return {};
+      return;
     }
   }
 

@@ -1,0 +1,10 @@
+{
+  "timestamp": "2026-06-25T14:03:14.942168Z",
+  "endpoint": "https://music.youtube.com/youtubei/v1/browse?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+  "variant": "FEmusic_home",
+  "kind": "req",
+  "method": "POST",
+  "url": "https://music.youtube.com/youtubei/v1/browse?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+  "bodySizeChars": 283,
+  "bodyPreview": "{\n  \"context\": {\n    \"client\": {\n      \"clientName\": \"WEB_REMIX\",\n      \"clientVersion\": \"1.20260625.01.00\",\n      \"hl\": \"en\"\n    },\n    \"user\": {}\n  },\n  \"playbackContext\": {\n    \"contentPlaybackCont..."
+}

@@ -1,0 +1,32 @@
+POST https://music.youtube.com/youtubei/v1/search?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30
+
+--- HEADERS ---
+{
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+  "accept": "*/*",
+  "accept-encoding": "gzip, deflate",
+  "content-type": "application/json",
+  "content-encoding": "gzip",
+  "origin": "https://music.youtube.com/",
+  "cookie": "CONSENT=YES+1",
+  "X-Goog-Visitor-Id": "CgtsYk5hQmItZEQxYyjDv-_RBjIKCgJDTxIEGgAgWWLfAgrcAjE5LllUPWRKeVRzdHhwWlZqeEE1dXdjS2pVRFNKakx1eUl6TUlvb1czYVI0d2g5VEdJWnJmcU14WnVSQUUwazdxQm10RWV2OUJxRzduaUQxZnpCMlFiMklsWDBwZnRhY1F5T0R0MjFsckI3NklMOGM5WS1xVUY3UXRCcE5BN2lLM3BTMTBGVG5uTTVrTFVNY3lrX2Y4eFZXOXFkLVNCZjlMZV96VVR1TXAza3JxYm1DMjBxODJQYVk4OXhfRm1wdXp1WS0xU0pwaEZTQUN6RHgzVDRub2h3RGdvdVY1bC04V3A3a3FoVFpodkVFbE9icEhMa18yRFJ2ZWtqVWdLRzZlQjdxMndRaGNmYmhTX0pta0FsVHBxdVBqek5fdmc3NUxYV0xSSFFMR0Flc2pkVnJ1a21EVGI5YWU5MmFqQUZKVHFkQWNhY2M3ZnlsX3N3YWZPWDM0ZHlfT0lVZw%3D%3D"
+}
+
+--- BODY ---
+{
+  "context": {
+    "client": {
+      "clientName": "WEB_REMIX",
+      "clientVersion": "1.20260625.01.00",
+      "hl": "en"
+    },
+    "user": {}
+  },
+  "playbackContext": {
+    "contentPlaybackContext": {
+      "signatureTimestamp": 20628
+    }
+  },
+  "query": "guia para la accion",
+  "params": "EgeKAQQoAEABahAQCRADEAQQChAFEBUQEBAR"
+}

@@ -1,0 +1,299 @@
+{
+  "info": {
+    "_postman_id": "harmony-music-api-2026-06-23",
+    "name": "Harmony-Music (YouTube Music internal API)",
+    "description": "Colección de endpoints internos que usa Harmony-Music contra `music.youtube.com/youtubei/v1/`. Generada a partir de `lib/services/music_service.dart` el 2026-06-23. Útil para depurar el bug de búsqueda y explorar parámetros de límite (count/limit) por categoría.\n\n**Cómo usar:**\n1. Importar en Postman.\n2. Configurar la variable `visitor_id` (se obtiene ejecutando primero la request `auth/visitor-id`).\n3. Reemplazar `__QUERY__`, `__CHANNEL_ID__`, etc. con valores reales.\n4. Empezar por `search - unfiltered (MAIN VIEW BUG)` — esa es la que devuelve 210KB+ cuando solo necesitamos 10 items por shelf.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://music.youtube.com/youtubei/v1/",
+      "type": "string"
+    },
+    {
+      "key": "visitor_id",
+      "value": "CgttN24wcmd5UzNSWSi2lvq2BjIKCgJKUBIEGgAgYQ%3D%3D",
+      "type": "string",
+      "description": "X-Goog-Visitor-Id. Se puede obtener ejecutando primero `auth/visitor-id` o mirando el log `[MusicServices] Got Visitor id` en flutter logs."
+    },
+    {
+      "key": "user_agent",
+      "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "auth/visitor-id",
+      "description": "Obtiene el X-Goog-Visitor-Id necesario para todas las requests autenticadas. Visita `https://music.youtube.com/` y extrae el campo `VISITOR_DATA` del `ytcfg.set({...})` inline en el HTML.",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://music.youtube.com/",
+          "protocol": "https",
+          "host": ["music", "youtube", "com"],
+          "path": [""]
+        }
+      }
+    },
+    {
+      "name": "search - unfiltered (MAIN VIEW BUG)",
+      "description": "Búsqueda sin filtro. Devuelve TODAS las categorías (Top result, Songs, Videos, Albums, Artists, Featured playlists, Community playlists) en un único response. **~210KB por request.** El bug actual: YouTube Music ahora envuelve los shelves regulares en `itemSectionRenderer` y el código no los procesa correctamente. **Empezar por aquí para depurar el performance y el bug de previews.**",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "application/json": "application/json", "value": "application/json"},
+          {"key": "Content-Encoding", "gzip": "gzip", "value": "gzip"},
+          {"key": "Accept", "value": "*/*"},
+          {"key": "Accept-Encoding", "value": "gzip, deflate"},
+          {"key": "User-Agent", "value": "{{user_agent}}"},
+          {"key": "Origin", "value": "https://music.youtube.com"},
+          {"key": "Cookie", "value": "CONSENT=YES+1"},
+          {"key": "X-Goog-Visitor-Id", "value": "{{visitor_id}}"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"context\": {\n    \"client\": {\n      \"clientName\": \"WEB_REMIX\",\n      \"clientVersion\": \"1.20260623.01.00\",\n      \"hl\": \"en\"\n    },\n    \"user\": {}\n  },\n  \"query\": \"__QUERY__\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}search?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+          "host": ["{{base_url}}search"],
+          "query": [
+            {"key": "prettyPrint", "value": "false"},
+            {"key": "alt", "value": "json"},
+            {"key": "key", "value": "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "search - filtered (songs)",
+      "description": "Búsqueda filtrada por categoría. Usado por los tabs del SearchResultScreen (Songs, Videos, Albums, Artists, etc.). El filtro va codificado en `params`. Devuelve SOLO la categoría solicitada, mucho más liviano (~30KB).",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "Content-Encoding", "value": "gzip"},
+          {"key": "Accept", "value": "*/*"},
+          {"key": "Accept-Encoding", "value": "gzip, deflate"},
+          {"key": "User-Agent", "value": "{{user_agent}}"},
+          {"key": "Origin", "value": "https://music.youtube.com"},
+          {"key": "Cookie", "value": "CONSENT=YES+1"},
+          {"key": "X-Goog-Visitor-Id", "value": "{{visitor_id}}"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"context\": {\n    \"client\": {\n      \"clientName\": \"WEB_REMIX\",\n      \"clientVersion\": \"1.20260623.01.00\",\n      \"hl\": \"en\"\n    },\n    \"user\": {}\n  },\n  \"query\": \"__QUERY__\",\n  \"params\": \"EgWKAQIIAWoMEA4QChADEAQQCRAF\"\n}\n\n// params tokens por filtro (de `getSearchParams` en lib/services/utils.dart):\n//   songs              -> EgWKAQI + I + AWoMEA4QChADEAQQCRAF\n//   videos             -> EgWKAQI + Q + AWoMEA4QChADEAQQCRAF\n//   albums             -> EgWKAQI + Y + AWoMEA4QChADEAQQCRAF\n//   artists            -> EgWKAQI + g + AWoMEA4QChADEAQQCRAF\n//   playlists          -> Eg-KAQwIABAAGAAgACgB + MABqChAEEAMQCRAFEAo%3D\n//   featured_playlists -> EgeKAQQoA + Dg + BagwQDhAKEAMQBBAJEAU%3D\n//   community_playlists-> EgeKAQQoA + EA + BagwQDhAKEAMQBBAJEAU%3D"
+        },
+        "url": {
+          "raw": "{{base_url}}search?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+          "host": ["{{base_url}}search"],
+          "query": [
+            {"key": "prettyPrint", "value": "false"},
+            {"key": "alt", "value": "json"},
+            {"key": "key", "value": "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "search - suggestions (autocomplete)",
+      "description": "Autocompletado. Se llama en cada keystroke en la barra de búsqueda. Devuelve hasta 10 sugerencias.",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "Content-Encoding", "value": "gzip"},
+          {"key": "User-Agent", "value": "{{user_agent}}"},
+          {"key": "Cookie", "value": "CONSENT=YES+1"},
+          {"key": "X-Goog-Visitor-Id", "value": "{{visitor_id}}"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"context\": {\n    \"client\": {\n      \"clientName\": \"WEB_REMIX\",\n      \"clientVersion\": \"1.20260623.01.00\",\n      \"hl\": \"en\"\n    },\n    \"user\": {}\n  },\n  \"input\": \"__QUERY__\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}music/get_search_suggestions?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+          "host": ["{{base_url}}music/get_search_suggestions"],
+          "query": [
+            {"key": "prettyPrint", "value": "false"},
+            {"key": "alt", "value": "json"},
+            {"key": "key", "value": "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "browse - home",
+      "description": "Home page (`FEmusic_home`). ~150KB. Usado en `getHome()`.",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "Content-Encoding", "value": "gzip"},
+          {"key": "User-Agent", "value": "{{user_agent}}"},
+          {"key": "Cookie", "value": "CONSENT=YES+1"},
+          {"key": "X-Goog-Visitor-Id", "value": "{{visitor_id}}"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"context\": {\n    \"client\": {\n      \"clientName\": \"WEB_REMIX\",\n      \"clientVersion\": \"1.20260623.01.00\",\n      \"hl\": \"en\"\n    },\n    \"user\": {}\n  },\n  \"browseId\": \"FEmusic_home\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}browse?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+          "host": ["{{base_url}}browse"],
+          "query": [
+            {"key": "prettyPrint", "value": "false"},
+            {"key": "alt", "value": "json"},
+            {"key": "key", "value": "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "browse - artist",
+      "description": "Página de un artista (`getArtist(channelId)`). browseId es el channelId.",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "Content-Encoding", "value": "gzip"},
+          {"key": "User-Agent", "value": "{{user_agent}}"},
+          {"key": "Cookie", "value": "CONSENT=YES+1"},
+          {"key": "X-Goog-Visitor-Id", "value": "{{visitor_id}}"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"context\": {\n    \"client\": {\n      \"clientName\": \"WEB_REMIX\",\n      \"clientVersion\": \"1.20260623.01.00\",\n      \"hl\": \"en\"\n    },\n    \"user\": {}\n  },\n  \"browseId\": \"__CHANNEL_ID__\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}browse?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+          "host": ["{{base_url}}browse"],
+          "query": [
+            {"key": "prettyPrint", "value": "false"},
+            {"key": "alt", "value": "json"},
+            {"key": "key", "value": "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "browse - album/playlist (audioPlaylistId lookup)",
+      "description": "Resuelve un `audioPlaylistId` a un `browseId`. Usado por `getAlbumBrowseId()`.",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "Content-Encoding", "value": "gzip"},
+          {"key": "User-Agent", "value": "{{user_agent}}"},
+          {"key": "Cookie", "value": "CONSENT=YES+1"},
+          {"key": "X-Goog-Visitor-Id", "value": "{{visitor_id}}"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"context\": {\n    \"client\": {\n      \"clientName\": \"WEB_REMIX\",\n      \"clientVersion\": \"1.20260623.01.00\",\n      \"hl\": \"en\"\n    },\n    \"user\": {}\n  },\n  \"browseId\": \"MPLA__AUDIO_PLAYLIST_ID__\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}browse?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+          "host": ["{{base_url}}browse"],
+          "query": [
+            {"key": "prettyPrint", "value": "false"},
+            {"key": "alt", "value": "json"},
+            {"key": "key", "value": "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "next - continuations (pagination)",
+      "description": "Carga la siguiente página de un shelf. El `continuation` token viene en la response anterior (campo `continuationContents` o `musicShelfContinuation`).",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "Content-Encoding", "value": "gzip"},
+          {"key": "User-Agent", "value": "{{user_agent}}"},
+          {"key": "Cookie", "value": "CONSENT=YES+1"},
+          {"key": "X-Goog-Visitor-Id", "value": "{{visitor_id}}"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"context\": {\n    \"client\": {\n      \"clientName\": \"WEB_REMIX\",\n      \"clientVersion\": \"1.20260623.01.00\",\n      \"hl\": \"en\"\n    },\n    \"user\": {}\n  },\n  \"continuation\": \"__CONTINUATION_TOKEN__\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}next?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+          "host": ["{{base_url}}next"],
+          "query": [
+            {"key": "prettyPrint", "value": "false"},
+            {"key": "alt", "value": "json"},
+            {"key": "key", "value": "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "player - song metadata",
+      "description": "Obtiene metadata de un videoId para reproducción. Usado por `getSongWithId()`.",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "Content-Encoding", "value": "gzip"},
+          {"key": "User-Agent", "value": "{{user_agent}}"},
+          {"key": "Cookie", "value": "CONSENT=YES+1"},
+          {"key": "X-Goog-Visitor-Id", "value": "{{visitor_id}}"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"context\": {\n    \"client\": {\n      \"clientName\": \"WEB_REMIX\",\n      \"clientVersion\": \"1.20260623.01.00\",\n      \"hl\": \"en\"\n    },\n    \"user\": {}\n  },\n  \"video_id\": \"__VIDEO_ID__\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}player?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+          "host": ["{{base_url}}player"],
+          "query": [
+            {"key": "prettyPrint", "value": "false"},
+            {"key": "alt", "value": "json"},
+            {"key": "key", "value": "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "Piped API (fallback for streaming)",
+      "description": "Endpoints alternativos de Piped API (instancias comunitarias). Usado para streams/downloads cuando YouTube Music no responde. Ver: https://github.com/TeamPiped/Piped-API\n\nConfigurar la variable `piped_base_url` apuntando a una instancia activa (ej. `https://pipedapi.kavin.rocks`).",
+      "variable": [
+        {"key": "piped_base_url", "value": "https://pipedapi.kavin.rocks", "type": "string"}
+      ],
+      "item": [
+        {
+          "name": "piped - search",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{piped_base_url}}/search?q=__QUERY__&filter=music_songs",
+              "host": ["{{piped_base_url}}"],
+              "path": ["search"],
+              "query": [
+                {"key": "q", "value": "__QUERY__"},
+                {"key": "filter", "value": "music_songs"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "piped - streams",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{piped_base_url}}/streams/__VIDEO_ID__",
+              "host": ["{{piped_base_url}}"],
+              "path": ["streams", "__VIDEO_ID__"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

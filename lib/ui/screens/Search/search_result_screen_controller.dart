@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:harmonymusic/ui/screens/Settings/settings_screen_controller.dart';
 
+import '../../../utils/debug_logger.dart';
 import '../../../utils/helper.dart';
 import '../Home/home_screen_controller.dart';
 import '/services/music_service.dart';
 import '/ui/widgets/sort_widget.dart';
+
+const _ctrlLogTag = 'SearchCtrl';
 
 class SearchResultScreenController extends GetxController
     with GetTickerProviderStateMixin {
@@ -96,7 +99,24 @@ class SearchResultScreenController extends GetxController
     final args = Get.arguments;
     if (args != null) {
       queryString.value = args;
+      DebugLogger.info(_ctrlLogTag, '_getInitSearchResult: query="$args"');
       resultContent.value = await musicServices.search(args);
+
+      // Diagnostic: full key/count breakdown of the resultContent map.
+      final breakdown = <String, int>{};
+      resultContent.forEach((k, v) {
+        if (k == 'searchEndpoint' || k == 'params') {
+          breakdown[k] = v is Map ? v.length : 0;
+        } else {
+          breakdown[k] = v is List ? v.length : 0;
+        }
+      });
+      DebugLogger.info(
+        _ctrlLogTag,
+        'resultContent received: keys=${resultContent.keys.toList()} '
+        'breakdown=$breakdown',
+      );
+
       final allKeys = resultContent.keys.where((element) => ([
             "Songs",
             "Videos",
@@ -106,6 +126,10 @@ class SearchResultScreenController extends GetxController
             "Artists"
           ]).contains(element));
       railItems.value = List<String>.from(allKeys);
+      DebugLogger.info(
+        _ctrlLogTag,
+        'railItems (after filter) = $railItems',
+      );
       final len =
           railItems.where((element) => element.contains("playlists")).length;
       final calH = 30 + (railItems.length + 1 - len) * 123 + len * 150.0;
