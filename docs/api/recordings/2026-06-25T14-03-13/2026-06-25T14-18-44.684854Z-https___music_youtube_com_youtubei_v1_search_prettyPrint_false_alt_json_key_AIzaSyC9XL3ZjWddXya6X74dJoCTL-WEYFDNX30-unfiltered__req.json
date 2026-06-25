@@ -1,0 +1,10 @@
+{
+  "timestamp": "2026-06-25T14:18:44.685273Z",
+  "endpoint": "https://music.youtube.com/youtubei/v1/search?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+  "variant": "unfiltered",
+  "kind": "req",
+  "method": "POST",
+  "url": "https://music.youtube.com/youtubei/v1/search?prettyPrint=false&alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+  "bodySizeChars": 287,
+  "bodyPreview": "{\n  \"context\": {\n    \"client\": {\n      \"clientName\": \"WEB_REMIX\",\n      \"clientVersion\": \"1.20260625.01.00\",\n      \"hl\": \"en\"\n    },\n    \"user\": {}\n  },\n  \"playbackContext\": {\n    \"contentPlaybackCont..."
+}
