@@ -65,32 +65,50 @@ class ResultWidget extends StatelessWidget {
     for (dynamic item in searchResScrController.resultContent.entries) {
       try {
         if (item.key == "Songs" || item.key == "Videos") {
-          trace.write('[$item.key:${(item.value as List).length}]');
+          final items = _castList<MediaItem>(item.value, item.key);
+          if (items == null || items.isEmpty) {
+            trace.write('[skip-empty:${item.key}]');
+            continue;
+          }
+          trace.write('[$item.key:${items.length}]');
           list.add(SeparateTabItemWidget(
-            items: List<MediaItem>.from(item.value),
+            items: items,
             title: item.key,
             isCompleteList: false,
           ));
         } else if (item.key == "Albums") {
-          trace.write('[$item.key:${(item.value as List).length}]');
+          final items = _castList<Album>(item.value, item.key);
+          if (items == null || items.isEmpty) {
+            trace.write('[skip-empty:${item.key}]');
+            continue;
+          }
+          trace.write('[$item.key:${items.length}]');
           list.add(ContentListWidget(
-            content: AlbumContent(
-                title: item.key, albumList: List<Album>.from(item.value)),
+            content:
+                AlbumContent(title: item.key, albumList: items),
             isHomeContent: false,
           ));
         } else if (item.key.toString().contains("playlist")) {
-          trace.write('[$item.key:${(item.value as List).length}]');
+          final items = _castList<Playlist>(item.value, item.key);
+          if (items == null || items.isEmpty) {
+            trace.write('[skip-empty:${item.key}]');
+            continue;
+          }
+          trace.write('[$item.key:${items.length}]');
           list.add(ContentListWidget(
-            content: PlaylistContent(
-              title: item.key,
-              playlistList: List<Playlist>.from(item.value),
-            ),
+            content:
+                PlaylistContent(title: item.key, playlistList: items),
             isHomeContent: false,
           ));
         } else if (item.key == "Artists") {
-          trace.write('[$item.key:${(item.value as List).length}]');
+          final items = _castList<Artist>(item.value, item.key);
+          if (items == null || items.isEmpty) {
+            trace.write('[skip-empty:${item.key}]');
+            continue;
+          }
+          trace.write('[$item.key:${items.length}]');
           list.add(SeparateTabItemWidget(
-            items: List<Artist>.from(item.value),
+            items: items,
             title: item.key,
             isCompleteList: false,
           ));
@@ -105,5 +123,23 @@ class ResultWidget extends StatelessWidget {
     }
     DebugLogger.debug(_widgetLogTag, trace.toString());
     return list;
+  }
+
+  /// Cast a List<dynamic> to a typed List<T>. If the first item is not of
+  /// type T, returns null and logs a warning. This protects the widget tree
+  /// from type-cast exceptions when the parser produces the wrong type for
+  /// a bucket (e.g. an Album sneaking into a Playlist bucket).
+  List<T>? _castList<T>(dynamic raw, String bucketKey) {
+    if (raw is! List) return null;
+    if (raw.isEmpty) return <T>[];
+    if (raw.first is! T) {
+      DebugLogger.warn(
+        _widgetLogTag,
+        'bucket "$bucketKey" has wrong item type: '
+        'expected $T, got ${raw.first.runtimeType}. Skipping.',
+      );
+      return null;
+    }
+    return List<T>.from(raw);
   }
 }
