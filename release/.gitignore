@@ -1,0 +1,11 @@
+# Release artifacts (binaries) — keep in sync with .github/workflows/
+release/*.apk
+release/*.aab
+release/SHA256SUMS.txt
+
+# Allow the release scripts and docs to be committed
+!release/install.sh
+!release/install.bat
+!release/README.md
+!release/INSTALL.md
+!release/RELEASE-NOTES.md
