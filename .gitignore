@@ -60,6 +60,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# SDD/agent internal artifacts (regenerated on init)
+.atl/
+
 # FVM Version Cache
 .fvm/
 .fvmrc
@@ -70,3 +73,4 @@ android/app/.cxx/Debug/*
 
 /android/app/.cxx
 
+/release
