@@ -60,6 +60,7 @@ class MyAudioHandler extends BaseAudioHandler with GetxServiceMixin {
   bool loudnessNormalizationEnabled = false;
   // var networkErrorPause = false;
   bool isSongLoading = true;
+  DateTime? _lastNetworkErrorShownAt;
 
   // list of shuffled queue songs ids
   List<String> shuffledQueue = [];
@@ -188,7 +189,7 @@ class MyAudioHandler extends BaseAudioHandler with GetxServiceMixin {
         //     _player.play();
         //   }
         // });
-        customAction("playByIndex", {'index': currentIndex, 'newUrl': true});
+        await customAction("playByIndex", {'index': currentIndex, 'newUrl': true});
         await _player.seek(curPos, index: 0);
       }
     });
@@ -461,23 +462,44 @@ class MyAudioHandler extends BaseAudioHandler with GetxServiceMixin {
         isSongLoading = true;
         playbackState.add(playbackState.value
             .copyWith(processingState: AudioProcessingState.loading));
-        if (_playList.children.isNotEmpty) {
-          await _playList.clear();
-        }
 
         mediaItem.add(currentSong);
-        final streamInfo = await futureStreamInfo;
+        var streamInfo = await futureStreamInfo;
         if (songIndex != currentIndex) {
           return;
-        } else if (!streamInfo.playable) {
-          currentSongUrl = null;
-          isSongLoading = false;
-          Get.find<PlayerController>().notifyPlayError(streamInfo.statusMSG);
-          playbackState.add(playbackState.value.copyWith(
-              processingState: AudioProcessingState.error,
-              errorCode: 404,
-              errorMessage: streamInfo.statusMSG));
-          return;
+        }
+
+        if (!streamInfo.playable) {
+          // Retry once for transient network errors
+          if (streamInfo.statusMSG == "networkError") {
+            await Future.delayed(const Duration(milliseconds: 1500));
+            if (songIndex != currentIndex) return;
+            final retryInfo = await checkNGetUrl(currentSong.id, generateNewUrl: true);
+            if (retryInfo.playable) {
+              streamInfo = retryInfo;
+            }
+          }
+
+          if (!streamInfo.playable) {
+            isSongLoading = false;
+            _notifyNetworkErrorWithCooldown(streamInfo.statusMSG);
+            playbackState.add(playbackState.value.copyWith(
+                processingState: AudioProcessingState.error,
+                errorCode: 404,
+                errorMessage: streamInfo.statusMSG));
+
+            if (!loopModeEnabled && queue.value.length > 1) {
+              final nextIndex = _getNextSongIndex();
+              if (nextIndex != currentIndex) {
+                await customAction("playByIndex", {'index': nextIndex});
+              }
+            }
+            return;
+          }
+        }
+
+        if (_playList.children.isNotEmpty) {
+          await _playList.clear();
         }
         currentSongUrl = currentSong.extras!['url'] = streamInfo.audio!.url;
         playbackState
@@ -708,6 +730,18 @@ class MyAudioHandler extends BaseAudioHandler with GetxServiceMixin {
     printINFO(
         "loudness:$currentLoudnessDb Normalized volume: $volumeAdjustment");
     _player.setVolume(volumeAdjustment.toDouble().clamp(0, 1.0));
+  }
+
+  void _notifyNetworkErrorWithCooldown(String statusMSG) {
+    if (statusMSG == "networkError") {
+      final now = DateTime.now();
+      if (_lastNetworkErrorShownAt != null &&
+          now.difference(_lastNetworkErrorShownAt!).inSeconds < 3) {
+        return;
+      }
+      _lastNetworkErrorShownAt = now;
+    }
+    Get.find<PlayerController>().notifyPlayError(statusMSG);
   }
 
   Future<void> saveSessionData() async {
