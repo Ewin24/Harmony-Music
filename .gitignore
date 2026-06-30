@@ -60,8 +60,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# SDD/agent internal artifacts (regenerated on init)
+# SDD/agent internal artifacts (regenerated on init; never committed)
 .atl/
+openspec/
 
 # FVM Version Cache
 .fvm/
