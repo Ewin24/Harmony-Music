@@ -756,8 +756,14 @@ class MyAudioHandler extends BaseAudioHandler with GetxServiceMixin {
       final position = _player.position.inMilliseconds;
       final prevSessionData = await Hive.openBox("prevSessionData");
       await prevSessionData.clear();
-      await prevSessionData.putAll(
-          {"queue": queueData, "position": position, "index": currIndex});
+      await prevSessionData.putAll({
+        "queue": queueData,
+        "position": position,
+        "index": currIndex,
+        "shuffleModeEnabled": shuffleModeEnabled,
+        "queueLoopModeEnabled": queueLoopModeEnabled,
+        "volume": (_player.volume * 100).round(),
+      });
       await prevSessionData.close();
       printINFO("Saved session data");
     }

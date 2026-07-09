@@ -264,6 +264,7 @@ class PlayerController extends GetxController
             .indexWhere((element) => element.id == currentSong.value!.id);
         await _checkFav();
         await _addToRP(currentSong.value!);
+        await _saveToRecentlyPlayed(currentSong.value!);
         if (isRadioModeOn && (currentSong.value!.id == currentQueue.last.id)) {
           await _addRadioContinuation(radioInitiatorItem!);
         }
@@ -299,8 +300,34 @@ class PlayerController extends GetxController
             .toList();
         final int currentIndex = prevSessionData.get("index");
         final int position = prevSessionData.get("position");
+
+        // Restore shuffle mode, loop mode, and volume from saved session
+        final savedShuffle =
+            prevSessionData.get("shuffleModeEnabled") as bool? ?? false;
+        final savedLoop =
+            prevSessionData.get("queueLoopModeEnabled") as bool? ?? false;
+        final savedVolume = prevSessionData.get("volume") as int? ?? 100;
         prevSessionData.close();
+
         await _audioHandler.addQueueItems(songList);
+
+        // Restore shuffle mode (queue is already in shuffled order from save)
+        if (savedShuffle) {
+          isShuffleModeEnabled.value = true;
+          await _audioHandler.customAction("shuffleCmd", {"index": currentIndex});
+        }
+
+        // Restore queue loop mode
+        if (savedLoop) {
+          isQueueLoopModeEnabled.value = true;
+          await _audioHandler.customAction(
+              "toggleQueueLoopMode", {"enable": true});
+          await Hive.box("AppPrefs").put("queueLoopModeEnabled", true);
+        }
+
+        // Restore volume — uses controller's setVolume to keep volume.value + AppPrefs in sync
+        setVolume(savedVolume);
+
         _playerPanelCheck(restoreSession: true);
         await _audioHandler.customAction("playByIndex", {
           "index": currentIndex,
@@ -309,6 +336,48 @@ class PlayerController extends GetxController
         });
       }
     }
+  }
+
+  Future<void> resumePlayback() async {
+    final prevSessionData = await Hive.openBox("prevSessionData");
+    if (prevSessionData.keys.isEmpty) {
+      await prevSessionData.close();
+      return;
+    }
+    final songList = (prevSessionData.get("queue") as List)
+        .map((e) => MediaItemBuilder.fromJson(e))
+        .toList();
+    final int currentIndex = prevSessionData.get("index");
+    final int position = prevSessionData.get("position");
+    final savedShuffle =
+        prevSessionData.get("shuffleModeEnabled") as bool? ?? false;
+    final savedLoop =
+        prevSessionData.get("queueLoopModeEnabled") as bool? ?? false;
+    final savedVolume = prevSessionData.get("volume") as int? ?? 100;
+    prevSessionData.close();
+
+    await _audioHandler.customAction("clearQueue");
+    await _audioHandler.addQueueItems(songList);
+    if (savedShuffle) {
+      isShuffleModeEnabled.value = true;
+      await _audioHandler.customAction("shuffleCmd", {"index": currentIndex});
+    }
+    if (savedLoop) {
+      isQueueLoopModeEnabled.value = true;
+      await _audioHandler.customAction("toggleQueueLoopMode", {"enable": true});
+      await Hive.box("AppPrefs").put("queueLoopModeEnabled", true);
+    }
+    setVolume(savedVolume);
+    _playerPanelCheck(restoreSession: true);
+    await _audioHandler.customAction("playByIndex", {
+      "index": currentIndex,
+      "position": position,
+      "restoreSession": true
+    });
+  }
+
+  Future<void> playSongFromMediaItem(MediaItem song) async {
+    await playPlayListSong([song], 0);
   }
 
   void _listenForCustomEvents() {
@@ -728,6 +797,18 @@ class PlayerController extends GetxController
       } catch (e) {}
     }
     recentItem = mediaItem;
+  }
+
+  Future<void> _saveToRecentlyPlayed(MediaItem mediaItem) async {
+    final box = await Hive.openBox("recentPlayedSongs");
+    final existing =
+        box.get("songs", defaultValue: <Map<String, dynamic>>[]) as List;
+    final json = MediaItemBuilder.toJson(mediaItem);
+    existing.removeWhere((e) => e["videoId"] == mediaItem.id);
+    existing.insert(0, json);
+    if (existing.length > 10) existing.removeLast();
+    await box.put("songs", existing);
+    await box.close();
   }
 
   Future<void> showLyrics() async {
