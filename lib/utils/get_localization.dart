@@ -248,6 +248,10 @@ Map<String, Map<String, String>> get keys => {
     "playingfromSelection": "اللعب من المختارة",
     "keepScreenOnWhilePlaying": "ابقِ الشاشة مضاءة أثناء التشغيل",
     "keepScreenOnWhilePlayingDes": "إذا تم التفعيل، ستبقى شاشة الجهاز مضاءة أثناء تشغيل الموسيقى"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"az" : {
     "playlistCreatednsongAddedAlert": "Pleylist yaradıldı və mahnı əlavə edildi!",
     "dismiss": "Ləğv et",
@@ -395,6 +399,10 @@ Map<String, Map<String, String>> get keys => {
     "cancelTimerAlert": "Yuxu taymeri ləğv edildi",
     "keepScreenOnWhilePlaying": "Musiqi çalarkən ekranı açıq saxla",
     "keepScreenOnWhilePlayingDes": "Aktivdirsə, cihazın ekranı musiqi çalarkən açıq qalacaq"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"bg" : {
     "playlistCreatednsongAddedAlert": "Създаден плейлист и добавена песен!",
     "dismiss": "Отхвърли",
@@ -673,6 +681,10 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "Връзката е копирана в клипборда",
     "keepScreenOnWhilePlaying": "Запази екрана включен по време на възпроизвеждане",
     "keepScreenOnWhilePlayingDes": "Ако е активирано, екранът на устройството ще остане включен по време на възпроизвеждане на музика"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"bn" : {
     "songs": "গানগুলো",
     "home": "হোম",
@@ -941,6 +953,10 @@ Map<String, Map<String, String>> get keys => {
     "importPlaylistDesc": "আমদানি করার জন্য পূর্বে রপ্তানি করা একটি প্লেলিস্ট JSON ফাইল নির্বাচন করুন",
     "keepScreenOnWhilePlaying": "প্লে থাকাকালীন স্ক্রীন জ্বলন্ত রাখুন",
     "keepScreenOnWhilePlayingDes": "সক্রিয় করলে, গান চলাকালীন ডিভাইসের স্ক্রীন জ্বলে থাকবে"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"ca" : {
     "libPlaylists": "Col · lecció de llistes de reproducció",
     "libArtists": "Biblioteca d'Artistes",
@@ -1211,6 +1227,10 @@ Map<String, Map<String, String>> get keys => {
     "importLargeFileNote": "Nota: La importació de llistes de reproducció grosses pot trigar més estona",
     "keepScreenOnWhilePlaying": "Mantenir la pantalla encesa mentre es reprodueix",
     "keepScreenOnWhilePlayingDes": "Si està activat, la pantalla del dispositiu romandrà encesa mentre es reprodueix música"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"cs" : {
     "home": "Domů",
     "playlistCreatednsongAddedAlert": "Playlist vytvořen a skladba přidána!",
@@ -1489,6 +1509,10 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "Odkaz zkopírován do schránky",
     "keepScreenOnWhilePlaying": "Nechat obrazovku zapnutou během přehrávání",
     "keepScreenOnWhilePlayingDes": "Pokud je povoleno, obrazovka zařízení zůstane během přehrávání hudby zapnutá"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"de" : {
     "home": "Start",
     "songs": "Lieder",
@@ -1762,6 +1786,10 @@ Map<String, Map<String, String>> get keys => {
     "importLargeFileNote": "Hinweis: Der Import großer Playlisten kann länger dauern",
     "keepScreenOnWhilePlaying": "Bildschirm während der Wiedergabe eingeschaltet lassen",
     "keepScreenOnWhilePlayingDes": "Wenn aktiviert, bleibt der Bildschirm des Geräts beim Musikhören eingeschaltet"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"en" : {
     "home": "Home",
     "songs": "Songs",
@@ -2037,6 +2065,10 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "Link copied to clipboard",
     "keepScreenOnWhilePlaying": "Keep screen on while playing",
     "keepScreenOnWhilePlayingDes": "If enabled, the device screen will stay awake while music is playing"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"eo" : {
     "renamePlaylist": "Alinomi Ludliston",
     "trending": "Populara",
@@ -2197,6 +2229,10 @@ Map<String, Map<String, String>> get keys => {
     "resetblacklistedplaylist": "Rekomencigi nigralistigitajn ludlistojn",
     "keepScreenOnWhilePlaying": "Konservi ekrano ŝaltita dum ludado",
     "keepScreenOnWhilePlayingDes": "Se ebligita, la ekrano de la aparato restos ŝaltita dum muziko ludas"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"es" : {
     "playlistCreatednsongAddedAlert": "¡Lista de reproducción creada y la canción fue añadida!",
     "dismiss": "Descartar",
@@ -2474,6 +2510,10 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "Link copiado al portapapeles",
     "keepScreenOnWhilePlaying": "Mantener la pantalla encendida mientras se reproduce",
     "keepScreenOnWhilePlayingDes": "Si está activado, la pantalla del dispositivo permanecerá despierta mientras se reproduce música"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"et" : {
     "home": "Avaleht",
     "songs": "Lood",
@@ -2749,6 +2789,10 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "Link on kopeeritud lõikelauale",
     "keepScreenOnWhilePlaying": "Hoia ekraan mängimise ajal sees",
     "keepScreenOnWhilePlayingDes": "Kui see on lubatud, jääb seadme ekraan muusika esituse ajal ärkvel"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"eu" : {
     "songs": "Abestiak",
     "playlists": "Erreprodukzio-zerrendak",
@@ -3024,6 +3068,10 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "Esteka arbelean kopiatu da",
     "keepScreenOnWhilePlaying": "Mantendu pantaila piztuta erreproduzitzen den bitartean",
     "keepScreenOnWhilePlayingDes": "Gaituta badago, gailuaren pantaila piztuta egongo da musika erreproduzitzen den bitartean"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"fa" : {
     "home": "خانه",
     "songs": "آهنگ",
@@ -3154,6 +3202,10 @@ Map<String, Map<String, String>> get keys => {
     "cacheHomeScreenDataDes": "ذخیره سازی داده‌های محتوای صفحه اصلی را فعال کنید، اگر این گزینه فعال باشد، صفحه اصلی فوراً بارگیری می‌شود",
     "keepScreenOnWhilePlaying": "روشن نگه داشتن صفحه هنگام پخش",
     "keepScreenOnWhilePlayingDes": "در صورت فعال بودن، صفحه دستگاه هنگام پخش موسیقی روشن خواهد ماند"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"fi" : {
     "libAlbums": "Kirjaston albumit",
     "libArtists": "Kirjaston artistit",
@@ -3308,6 +3360,10 @@ Map<String, Map<String, String>> get keys => {
     "systemDefault": "Järjestelmän oletus",
     "keepScreenOnWhilePlaying": "Pidä näyttö päällä toiston aikana",
     "keepScreenOnWhilePlayingDes": "Jos käytössä, laitteen näyttö pysyy päällä musiikin toiston aikana"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"fil" : {
     "enqueueAll": "Patugtugin lahat",
     "recentlyPlayed": "Nakaraang Tugtugin",
@@ -3522,9 +3578,17 @@ Map<String, Map<String, String>> get keys => {
     "allFieldsReqMsg": "Kailagan may laman ang mga field",
     "keepScreenOnWhilePlaying": "Panatilihing naka-on ang screen habang tumutugtog",
     "keepScreenOnWhilePlayingDes": "Kung naka-enable, mananatiling naka-on ang screen ng device habang tumutugtog ang musika"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"fj" : {
     "keepScreenOnWhilePlaying": "Taura na mata ni bula tiko ni qito",
     "keepScreenOnWhilePlayingDes": "Kevaka e vakayagataki, na mata ni iyaya ena bula tiko ni qito na sere"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"fr" : {
     "libPlaylists": "Playlists de la Bibliothèque",
     "networkError1": "Oups erreur réseau !",
@@ -3805,9 +3869,17 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "Lien copié dans le presse-papiers",
     "keepScreenOnWhilePlaying": "Garder l'écran allumé pendant la lecture",
     "keepScreenOnWhilePlayingDes": "S'il est activé, l'écran restera allumé pendant la lecture de la musique"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"ga" : {
     "keepScreenOnWhilePlaying": "Coinnigh an scáileán ar siúl agus tú ag seinm",
     "keepScreenOnWhilePlayingDes": "Má tá sé faoi ghníomh, coinníodhfaidh scáileán an ghléis ar siúl agus tú ag seinm ceoil"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"gl" : {
     "singles": "Sinxelos",
     "artists": "Artistas",
@@ -4078,6 +4150,10 @@ Map<String, Map<String, String>> get keys => {
     "importLargeFileNote": "Nota: As listaxes grandes poden tardar máis en importarse",
     "keepScreenOnWhilePlaying": "Manter a pantalla acesa mentres se reproduce",
     "keepScreenOnWhilePlayingDes": "Se está activado, a pantalla do dispositivo manterase acesa mentres se reproduce música"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"hi" : {
     "themeMode": "थीम मोड",
     "playlists": "प्लेलिस्ट",
@@ -4316,6 +4392,10 @@ Map<String, Map<String, String>> get keys => {
     "songInfo": "गाने की जानकारी",
     "keepScreenOnWhilePlaying": "प्ले के दौरान स्क्रीन जला रखें",
     "keepScreenOnWhilePlayingDes": "यदि सक्षम है, तो संगीत चलाते समय डिवाइस की स्क्रीन जगी रहेगी"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"hr" : {
     "home": "Početna",
     "songs": "Pjesme",
@@ -4343,6 +4423,10 @@ Map<String, Map<String, String>> get keys => {
     "selectAll": "Odaberi sve",
     "keepScreenOnWhilePlaying": "Ostavi zaslon uključen tijekom reprodukcije",
     "keepScreenOnWhilePlayingDes": "Ako je omogućeno, zaslon uređaja ostat će uključen tijekom reprodukcije glazbe"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"hu" : {
     "artists": "Előadók",
     "settings": "Beállítások",
@@ -4447,6 +4531,10 @@ Map<String, Map<String, String>> get keys => {
     "upNext": "Következő",
     "keepScreenOnWhilePlaying": "A képernyő bekapcsolva tartása lejátszás közben",
     "keepScreenOnWhilePlayingDes": "Ha engedélyezve van, a készülék képernyője lejátszás közben bekapcsolva marad"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"ia" : {
     "playlistCreatednsongAddedAlert": "Lista de reproduction create e canto addite!",
     "dismiss": "Dimitter",
@@ -4672,6 +4760,10 @@ Map<String, Map<String, String>> get keys => {
     "enableSlidableAction": "Activar le acciones glissabile",
     "keepScreenOnWhilePlaying": "Mantenir le schermo accendite durante le reproduction",
     "keepScreenOnWhilePlayingDes": "Si activate, le schermo del dispositivo remanera accendite durante le reproduction del musica"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"id" : {
     "playlistCreatednsongAddedAlert": "Daftar Putar dibuat & lagu ditambahkan!",
     "dismiss": "Biarkan",
@@ -4940,6 +5032,10 @@ Map<String, Map<String, String>> get keys => {
     "importLargeFileNote": "Catatan: Daftar putar berukuran besar mungkin akan memakan waktu lama saat mengimpor",
     "keepScreenOnWhilePlaying": "Pertahankan layar tetap hidup saat memutar",
     "keepScreenOnWhilePlayingDes": "Jika diaktifkan, layar perangkat akan tetap menyala saat musik sedang diputar"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"it" : {
     "home": "Pagina principale",
     "songs": "Canzoni",
@@ -5215,6 +5311,10 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "Link copiato negli appunti",
     "keepScreenOnWhilePlaying": "Mantieni lo schermo attivo durante la riproduzione",
     "keepScreenOnWhilePlayingDes": "Se abilitato, lo schermo del dispositivo resterà acceso mentre la musica viene riprodotta"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"ja" : {
     "playlistCreatednsongAddedAlert": "再生リストを作成し曲を追加しました！",
     "dismiss": "非表示",
@@ -5492,6 +5592,10 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "リンクをクリップボードにコピー",
     "keepScreenOnWhilePlaying": "再生中は画面を点灯したままにする",
     "keepScreenOnWhilePlayingDes": "有効にすると、音楽再生中はデバイスの画面が点灯したままになります"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"km" : {
     "home": "ដើម",
     "singles": "ទោល",
@@ -5504,6 +5608,10 @@ Map<String, Map<String, String>> get keys => {
     "library": "បណ្ណាល័យ",
     "keepScreenOnWhilePlaying": "រក្សាអេក្រង់ឲ្យភ្លឺនៅពេលកំពុងចាក់",
     "keepScreenOnWhilePlayingDes": "ប្រសិនបើបានបើក អេក្រង់ឧបករណ៍នឹងនៅភ្លឺខណៈពេលចាក់តន្ត្រី"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"kn" : {
     "libArtists": "",
     "artists": "ಕಲಾವಿದರು",
@@ -5524,6 +5632,10 @@ Map<String, Map<String, String>> get keys => {
     "renamePlaylist": "ಪ್ಲೇಪಟ್ಟಿಯನ್ನು ಮರುಹೆಸರಿಸಿ",
     "keepScreenOnWhilePlaying": "ಪ್ಲೇ ಮಾಡುವಾಗ ಪರದೆ ಜಾಗೃತವಾಗಿರಲಿ",
     "keepScreenOnWhilePlayingDes": "ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ಸಂಗೀತ ಪ್ಲೇ ಮಾಡುವಾಗ ಸಾಧನದ ಪರದೆ ಜಾಗೃತವಾಗಿರುತ್ತದೆ"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"ko" : {
     "deleteDownloadData": "다운로드에서 제거",
     "trending": "인기 급상승",
@@ -5706,9 +5818,17 @@ Map<String, Map<String, String>> get keys => {
     "openIn": "열기",
     "keepScreenOnWhilePlaying": "재생 중 화면 켜짐 유지",
     "keepScreenOnWhilePlayingDes": "활성화하면 음악 재생 중에 기기 화면이 켜진 상태로 유지됩니다"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"ku" : {
     "keepScreenOnWhilePlaying": "Li demê lîstinê ekranê li ser bimîne",
     "keepScreenOnWhilePlayingDes": "Heke çalak be, ekranê amûrê di dema lîstinê de dikare bimîne"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"ml" : {
     "songs": "പാട്ടുകൾ",
     "home": "ഹോംപേജ്",
@@ -5773,9 +5893,17 @@ Map<String, Map<String, String>> get keys => {
     "playnextMsg": "വെരാൻ പോകുന്നത്",
     "keepScreenOnWhilePlaying": "പ്ലേ ചെയ്യുമ്പോൾ സ്‌ക്രീൻ ഓണായിരിക്കട്ടെ",
     "keepScreenOnWhilePlayingDes": "സജ്ജമാക്കിയാൽ, സംഗീതം പ്ലേ ചെയ്യുമ്പോൾ ഡിവൈസിന്റെ സ്‌ക്രീൻ ഓണായിരിക്കുമെന്ന് ഉറപ്പ ചെയ്യും"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"my" : {
     "keepScreenOnWhilePlaying": "တေးဂီတဖျော်ဖြေနချိန် မျက်နှာပြင် မပွင့်ထားပါနဲ့",
     "keepScreenOnWhilePlayingDes": "ဖွင့်ထားပါက အသံလှည့်နေစဉ် စက်ပစ္စည်း၏ မျက်နှာပြင် မအိပ်ဘဲ ပွင့်နေပါလိမ့်မည်"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"nb_NO" : {
     "home": "Hjem",
     "low": "Lav",
@@ -5916,6 +6044,10 @@ Map<String, Map<String, String>> get keys => {
     "minutes": "minutter",
     "keepScreenOnWhilePlaying": "Hold skjermen på under avspilling",
     "keepScreenOnWhilePlayingDes": "Hvis aktivert, vil enhetens skjerm være på mens musikk spilles"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"nl" : {
     "enqueueAll": "Alles in wachtrij",
     "removePlaylist": "Verwijder Afspeellijst",
@@ -6105,6 +6237,10 @@ Map<String, Map<String, String>> get keys => {
     "selectAll": "Selecteer alle",
     "keepScreenOnWhilePlaying": "Scherm aanhouden tijdens afspelen",
     "keepScreenOnWhilePlayingDes": "Indien ingeschakeld blijft het scherm van het apparaat ingeschakeld tijdens het afspelen van muziek"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"or" : {
     "playlistCreatednsongAddedAlert": "ପ୍ଲେଲିଷ୍ଟ ସୃଷ୍ଟି ଏବଂ ଗୀତ ଯୋଡା ଯାଇଛି!",
     "dismiss": "ବରଖାସ୍ତ",
@@ -6251,6 +6387,10 @@ Map<String, Map<String, String>> get keys => {
     "album": "ସଂଗ୍ରହପୁସ୍ତକ",
     "keepScreenOnWhilePlaying": "ସଙ୍ଗୀତ ଚଲିଥିବାବେଳେ ସ୍କ୍ରୀନ୍ ଚାଲୁ ରଖନ୍ତୁ",
     "keepScreenOnWhilePlayingDes": "ସକ୍ରିୟ କଲେ, ସଙ୍ଗୀତ ଚଳାଉଥିବା ସମୟରେ ଡିଭାଇସର ସ୍କ୍ରୀନ୍ ଜାଗ୍ରତ ରହିବ"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"pa" : {
     "playlistCreatednsongAddedAlert": "ਪਲੇਲਿਸਟ ਬਣਾਈ ਗਈ ਅਤੇ ਗੀਤ ਜੋੜਿਆ ਗਿਆ!",
     "dismiss": "ਖਾਰਿਜ ਕਰੋ",
@@ -6487,6 +6627,10 @@ Map<String, Map<String, String>> get keys => {
     "loudnessNormalizationDes": "ਸਾਰੇ ਗੀਤਾਂ (ਪ੍ਰਯੋਗਾਤਮਕ) ਲਈ ਉੱਚੀ ਆਵਾਜ਼ ਦਾ ਇੱਕੋ ਪੱਧਰ ਸੈੱਟ ਕਰਦਾ ਹੈ (ਪਿਛਲੇ ਸੰਸਕਰਣ (< v1.10.0) 'ਤੇ ਡਾਊਨਲੋਡ ਕੀਤੇ ਗੀਤਾਂ 'ਤੇ ਕੰਮ ਨਹੀਂ ਕਰੇਗਾ)",
     "keepScreenOnWhilePlaying": "ਸੰਗੀਤ ਚਲਾਉਣ ਦੌਰਾਨ ਸਕਰੀਨ ਚਾਲੂ ਰੱਖੋ",
     "keepScreenOnWhilePlayingDes": "ਜੇ ਇਹ ਚਾਲੂ ਕੀਤਾ ਗਿਆ ਹੈ, ਤਾਂ ਡਿਵਾਈਸ ਦੀ ਸਕ੍ਰੀਨ ਸੰਗੀਤ ਚਲਦੇ ਸਮੇਂ ਚਾਲੂ ਰਹੇਗੀ"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"pl" : {
     "home": "Główna",
     "songs": "Utwory",
@@ -6760,6 +6904,10 @@ Map<String, Map<String, String>> get keys => {
     "importError": "Błąd podczas importowania listy odtwarzania",
     "keepScreenOnWhilePlaying": "Utrzymuj ekran włączony podczas odtwarzania",
     "keepScreenOnWhilePlayingDes": "Jeśli włączone, ekran urządzenia pozostanie włączony podczas odtwarzania muzyki"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"pt" : {
     "renamePlaylist": "Renomear Playlist",
     "noLibPlaylist": "Você não tem uma biblioteca de playlist!",
@@ -7030,6 +7178,10 @@ Map<String, Map<String, String>> get keys => {
     "importLargeFileNote": "Nota: Playlists longas pode levar mais tempo para importar",
     "keepScreenOnWhilePlaying": "Manter a tela ligada durante a reprodução",
     "keepScreenOnWhilePlayingDes": "Se ativado, a tela do dispositivo permanecerá ligada enquanto a música estiver sendo reproduzida"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"ro" : {
     "minutes": "minute",
     "results": "Rezultate",
@@ -7276,6 +7428,10 @@ Map<String, Map<String, String>> get keys => {
     "id": "Id",
     "keepScreenOnWhilePlaying": "Păstrează ecranul aprins în timpul redării",
     "keepScreenOnWhilePlayingDes": "Dacă este activat, ecranul dispozitivului va rămâne aprins în timp ce muzica se redă"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"ru" : {
     "home": "Главная",
     "songs": "Песни",
@@ -7554,6 +7710,10 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "Ссылка скопирована в буфер обмена",
     "keepScreenOnWhilePlaying": "Держать экран включенным во время воспроизведения",
     "keepScreenOnWhilePlayingDes": "Если включено, экран устройства будет оставаться включенным во время воспроизведения музыки"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"sk" : {
     "nomatch": "Nenašla sa žiadna zhoda pre",
     "subscribers": "Odberatelia",
@@ -7831,6 +7991,10 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "Odkaz skopírovaný do schránky",
     "keepScreenOnWhilePlaying": "Nechajte obrazovku zapnutú počas prehrávania",
     "keepScreenOnWhilePlayingDes": "Ak je povolené, obrazovka zariadenia zostane zapnutá počas prehrávania hudby"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"sr" : {
     "playlistCreatednsongAddedAlert": "Плејлиста је направљена и песма је додата!",
     "dismiss": "Одбаци",
@@ -8102,6 +8266,10 @@ Map<String, Map<String, String>> get keys => {
     "importErrorFormat": "Неважећи формат фајла",
     "keepScreenOnWhilePlaying": "Одржавај екран укљученим током репродукције",
     "keepScreenOnWhilePlayingDes": "Ако је омогућено, екран уређаја ће остати укључен док се репродукује музика"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"sv" : {
     "settings": "Inställningar",
     "library": "Bibliotek",
@@ -8271,6 +8439,10 @@ Map<String, Map<String, String>> get keys => {
     "goToDownloadPage": "Klicka här för att gå till nedladdningssidan",
     "keepScreenOnWhilePlaying": "Håll skärmen på under uppspelning",
     "keepScreenOnWhilePlayingDes": "Om aktiverat förblir enhetens skärm på medan musik spelas"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"ta" : {
     "CreateNewPlaylist": "புதிய பட்டியலை உருவாக்கு",
     "home": "முகப்பு",
@@ -8539,6 +8711,10 @@ Map<String, Map<String, String>> get keys => {
     "importLargeFileNote": "குறிப்பு: பெரிய பிளேலிஸ்ட்களை இறக்குமதி செய்ய அதிக நேரம் ஆகலாம்",
     "keepScreenOnWhilePlaying": "ப்ளே செய்யும்போது திரையை இயக்க 상태வை வைத்திரு",
     "keepScreenOnWhilePlayingDes": "செயல்படுத்தப்பட்டால், இசை ஓடும்போது சாதனத்தின் திரை பயங்கரவாக இருக்கும்"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"te" : {
     "selectSongs": "పాటలను ఎంచుకోండి",
     "openIn": "తెరవండి",
@@ -8676,6 +8852,10 @@ Map<String, Map<String, String>> get keys => {
     "exporting": "ఎగుమతి చేస్తున్నది...",
     "keepScreenOnWhilePlaying": "సంగీతం ప్లే చేస్తున్నప్పుడు స్క్రీన్ ఆన్ ఉంచండి",
     "keepScreenOnWhilePlayingDes": "సక్రియపెడితే, సంగీతం ప్లే చేస్తున్నప్పుడు పరికరం యొక్క స్క్రీన్ ఆన్ గా ఉంటుంది"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"tr" : {
     "renamePlaylist": "Çalma Listesini Yeniden Adlandır",
     "networkError1": "Oops ağ hatası!",
@@ -8954,6 +9134,10 @@ Map<String, Map<String, String>> get keys => {
     "exportToYouTubeMusicSubtitle": "Çalma listenizdeki 50 şarkıdan kısa olanları mevcut kuyruğa ekleyecek, YtMusic'te açtıktan sonra çalma listesine eklemeyi/kaydetmeyi unutmayın",
     "keepScreenOnWhilePlaying": "Müzik çalarken ekranı açık tut",
     "keepScreenOnWhilePlayingDes": "Etkinleştirildiğinde, müzik çalarken cihazın ekranı açık kalır"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"uk" : {
     "library": "Бібліотека",
     "libPlaylists": "Бібліотека списків відтворення",
@@ -9231,6 +9415,10 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "Посилання скопійовано в буфер обміну",
     "keepScreenOnWhilePlaying": "Тримати екран увімкненим під час відтворення",
     "keepScreenOnWhilePlayingDes": "Якщо увімкнено, екран пристрою залишатиметься увімкненим під час відтворення музики"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"ur" : {
     "songs": "گانے",
     "playlists": "پلے لسٹ",
@@ -9244,6 +9432,10 @@ Map<String, Map<String, String>> get keys => {
     "libSongs": "لائبریری کے گانے",
     "keepScreenOnWhilePlaying": "پلے ہوتے وقت اسکرین کو روشن رکھیں",
     "keepScreenOnWhilePlayingDes": "اگر فعال ہو تو، جب موسیقی چل رہی ہوگی تو ڈیوائس کی اسکرین روشن رہے گی"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"vi" : {
     "home": "Trang chủ",
     "songs": "Bài hát",
@@ -9521,6 +9713,10 @@ Map<String, Map<String, String>> get keys => {
     "linkCopied": "Liên kết đã được sao chép vào bảng tạm",
     "keepScreenOnWhilePlaying": "Giữ màn hình sáng khi phát nhạc",
     "keepScreenOnWhilePlayingDes": "Nếu được bật, màn hình thiết bị sẽ giữ sáng trong khi nhạc đang phát"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"zh-CN" : {
     "home": "首页",
     "songs": "歌曲",
@@ -9799,6 +9995,10 @@ Map<String, Map<String, String>> get keys => {
     "exportPlaylistCsvSubtitle": "无法在此处导入",
     "keepScreenOnWhilePlaying": "播放时保持屏幕常亮",
     "keepScreenOnWhilePlayingDes": "启用后，播放音乐时设备屏幕将保持点亮"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },"zh-TW" : {
     "createnAdd": "建立並新增",
     "cachedOrOffline": "快取/離線",
@@ -10067,6 +10267,10 @@ Map<String, Map<String, String>> get keys => {
     "importLargeFileNote": "注意：匯入大型播放清單可能需要更長的時間",
     "keepScreenOnWhilePlaying": "播放時保持螢幕常亮",
     "keepScreenOnWhilePlayingDes": "啟用後，播放音樂時設備螢幕將保持亮起"
+
+    "clearSearchHistory": "Clear search history",
+    "clearSearchHistoryConfirm": "Clear all search history?",
+    "clearSearchHistoryDone": "Search history cleared"
 },
  };
 }

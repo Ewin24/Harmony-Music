@@ -10,6 +10,31 @@ import 'search_screen_controller.dart';
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
+  void _confirmClearSearchHistory(
+      BuildContext context, SearchScreenController controller) {
+    Get.defaultDialog(
+      title: "clearSearchHistoryConfirm".tr,
+      middleText: "",
+      confirm: ElevatedButton(
+        onPressed: () {
+          controller.clearSearchHistory();
+          Get.back();
+          Get.snackbar(
+            "clearSearchHistoryDone".tr,
+            "",
+            snackPosition: SnackPosition.BOTTOM,
+            duration: const Duration(seconds: 2),
+          );
+        },
+        child: const Text("Yes"),
+      ),
+      cancel: TextButton(
+        onPressed: () => Get.back(),
+        child: Text("cancel".tr),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final searchScreenController = Get.put(SearchScreenController());
@@ -133,11 +158,24 @@ class SearchScreen extends StatelessWidget {
                                       ),
                                     )
                                   ]
-                                : list
-                                    .map((item) => SearchItem(
+                                : [
+                                    if (isEmpty &&
+                                        searchScreenController
+                                            .historyQuerylist.isNotEmpty)
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 10.0),
+                                        child: TextButton.icon(
+                                          onPressed: () => _confirmClearSearchHistory(context, searchScreenController),
+                                          icon: const Icon(Icons.delete_sweep,
+                                              size: 20),
+                                          label: Text("clearSearchHistory".tr),
+                                        ),
+                                      ),
+                                    ...list.map((item) => SearchItem(
                                         queryString: item,
                                         isHistoryString: isEmpty))
-                                    .toList());
+                                  ]);
                       }),
                     )
                   ],
