@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +14,7 @@ import '/ui/player/player_controller.dart';
 import '/ui/widgets/create_playlist_dialog.dart';
 import '../../navigator.dart';
 import '../../widgets/content_list_widget.dart';
+import '../../widgets/image_widget.dart';
 import '../../widgets/quickpickswidget.dart';
 import '../../widgets/shimmer_widgets/home_shimmer.dart';
 import 'home_screen_controller.dart';
@@ -109,6 +111,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final playerController = Get.find<PlayerController>();
     final homeScreenController = Get.find<HomeScreenController>();
     final settingsScreenController = Get.find<SettingsScreenController>();
     final size = MediaQuery.of(context).size;
@@ -198,6 +201,31 @@ class Body extends StatelessWidget {
                         final items = homeScreenController
                                 .isContentFetched.value
                             ? [
+                                // Continue playing section
+                                Obx(() {
+                                  if (homeScreenController
+                                          .continuePlaying.value ==
+                                      null) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return _ContinuePlayingCard(
+                                    song: homeScreenController
+                                        .continuePlaying.value!,
+                                    playerController: playerController,
+                                  );
+                                }),
+                                // Recently played section
+                                Obx(() {
+                                  if (homeScreenController
+                                      .recentlyPlayedItems.isEmpty) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return _RecentlyPlayedRow(
+                                    items: homeScreenController
+                                        .recentlyPlayedItems.toList(),
+                                    playerController: playerController,
+                                  );
+                                }),
                                 Obx(() {
                                   final scrollController = ScrollController();
                                   homeScreenController.contentScrollControllers
@@ -275,5 +303,130 @@ class Body extends StatelessWidget {
         })
         .whereType<Widget>()
         .toList();
+  }
+}
+
+class _ContinuePlayingCard extends StatelessWidget {
+  final MediaItem song;
+  final PlayerController playerController;
+
+  const _ContinuePlayingCard({
+    required this.song,
+    required this.playerController,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0, right: 16.0),
+      child: Card(
+        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(
+            color: theme.colorScheme.primary.withValues(alpha: 0.2),
+          ),
+        ),
+        child: ListTile(
+          leading: Icon(
+            Icons.play_circle_fill,
+            size: 48,
+            color: theme.colorScheme.primary,
+          ),
+          title: Text(
+            song.title,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.titleMedium,
+          ),
+          subtitle: Text(
+            song.artist ?? '',
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.titleSmall,
+          ),
+          trailing: IconButton(
+            onPressed: () => playerController.resumePlayback(),
+            icon: Icon(
+              Icons.play_circle,
+              color: theme.colorScheme.primary,
+            ),
+          ),
+          onTap: () => playerController.resumePlayback(),
+        ),
+      ),
+    );
+  }
+}
+
+class _RecentlyPlayedRow extends StatelessWidget {
+  final List<MediaItem> items;
+  final PlayerController playerController;
+
+  const _RecentlyPlayedRow({
+    required this.items,
+    required this.playerController,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+          child: Text(
+            'Recently played',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+        SizedBox(
+          height: 80,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final song = items[index];
+              return GestureDetector(
+                onTap: () =>
+                    playerController.playSongFromMediaItem(song),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: Row(
+                    children: [
+                      ImageWidget(song: song, size: 60),
+                      const SizedBox(width: 8),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 120,
+                            child: Text(
+                              song.title,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 120,
+                            child: Text(
+                              song.artist ?? '',
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 8),
+      ],
+    );
   }
 }

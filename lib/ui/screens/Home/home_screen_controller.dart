@@ -25,6 +25,8 @@ class HomeScreenController extends GetxController {
   final showVersionDialog = true.obs;
   //isHomeScreenOnTop var only useful if bottom nav enabled
   final isHomeSreenOnTop = true.obs;
+  final recentlyPlayedItems = <MediaItem>[].obs;
+  final continuePlaying = Rxn<MediaItem>();
   final List<ScrollController> contentScrollControllers = [];
   bool reverseAnimationtransiton = false;
 
@@ -55,6 +57,29 @@ class HomeScreenController extends GetxController {
     } else {
       loadContentFromNetwork();
     }
+    loadRecentlyPlayed();
+    loadContinuePlaying();
+  }
+
+  Future<void> loadRecentlyPlayed() async {
+    final box = await Hive.openBox("recentPlayedSongs");
+    final songs =
+        box.get("songs", defaultValue: <Map<String, dynamic>>[]) as List;
+    recentlyPlayedItems.value =
+        songs.map((e) => MediaItemBuilder.fromJson(e)).toList();
+    await box.close();
+  }
+
+  Future<void> loadContinuePlaying() async {
+    final box = await Hive.openBox("prevSessionData");
+    if (box.keys.isNotEmpty) {
+      final queue = box.get("queue") as List?;
+      final index = box.get("index") as int? ?? 0;
+      if (queue != null && queue.isNotEmpty && index < queue.length) {
+        continuePlaying.value = MediaItemBuilder.fromJson(queue[index]);
+      }
+    }
+    await box.close();
   }
 
   Future<bool> loadContentFromDb() async {
