@@ -27,6 +27,7 @@ class HomeScreenController extends GetxController {
   final isHomeSreenOnTop = true.obs;
   final recentlyPlayedItems = <MediaItem>[].obs;
   final continuePlaying = Rxn<MediaItem>();
+  final restoredSessionQueue = <MediaItem>[].obs;
   final List<ScrollController> contentScrollControllers = [];
   bool reverseAnimationtransiton = false;
 
@@ -59,6 +60,7 @@ class HomeScreenController extends GetxController {
     }
     loadRecentlyPlayed();
     loadContinuePlaying();
+    loadLastSessionQueue();
   }
 
   Future<void> loadRecentlyPlayed() async {
@@ -77,6 +79,19 @@ class HomeScreenController extends GetxController {
       final index = box.get("index") as int? ?? 0;
       if (queue != null && queue.isNotEmpty && index < queue.length) {
         continuePlaying.value = MediaItemBuilder.fromJson(queue[index]);
+      }
+    }
+    await box.close();
+  }
+
+  Future<void> loadLastSessionQueue() async {
+    final box = await Hive.openBox("prevSessionData");
+    if (box.keys.isNotEmpty) {
+      final queue = box.get("queue") as List?;
+      if (queue != null && queue.isNotEmpty) {
+        restoredSessionQueue.value = queue
+            .map((e) => MediaItemBuilder.fromJson(e as Map<String, dynamic>))
+            .toList();
       }
     }
     await box.close();
@@ -209,17 +224,18 @@ class HomeScreenController extends GetxController {
   ) {
     List contentTemp = [];
     for (var content in contents) {
-      if((content["contents"]).isEmpty) continue;
-      if ((content["contents"][0]).runtimeType == Playlist) {
+      final items = content["contents"];
+      if (items == null || items is! List || items.isEmpty) continue;
+      if (items[0].runtimeType == Playlist) {
         final tmp = PlaylistContent(
-            playlistList: (content["contents"]).whereType<Playlist>().toList(),
+            playlistList: items.whereType<Playlist>().toList(),
             title: content["title"]);
         if (tmp.playlistList.length >= 2) {
           contentTemp.add(tmp);
         }
-      } else if ((content["contents"][0]).runtimeType == Album) {
+      } else if (items[0].runtimeType == Album) {
         final tmp = AlbumContent(
-            albumList: (content["contents"]).whereType<Album>().toList(),
+            albumList: items.whereType<Album>().toList(),
             title: content["title"]);
         if (tmp.albumList.length >= 2) {
           contentTemp.add(tmp);
