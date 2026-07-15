@@ -111,7 +111,8 @@ class ListWidget extends StatelessWidget with RemoveSongFromPlaylistMixin {
                       playfrom: PlaylingFrom(
                         type: PlaylingFromType.PLAYLIST,
                         name: playlist.title,
-                      ))
+                      ),
+                      playlistid: playlist.playlistId)
                   : playerController.pushSongToQueue(items[index] as MediaItem);
         },
       ),

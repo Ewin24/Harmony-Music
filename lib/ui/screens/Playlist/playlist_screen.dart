@@ -319,7 +319,11 @@ class PlaylistScreen extends StatelessWidget {
                                                         name: playlistController
                                                             .playlist.value.title,
                                                         type: PlaylingFromType
-                                                            .PLAYLIST));
+                                                            .PLAYLIST),
+                                                    playlistid: playlistController
+                                                        .playlist
+                                                        .value
+                                                        .playlistId);
                                               },
                                               icon: Icon(
                                                 Icons.play_circle,
@@ -372,7 +376,11 @@ class PlaylistScreen extends StatelessWidget {
                                                         name: playlistController
                                                             .playlist.value.title,
                                                         type: PlaylingFromType
-                                                            .PLAYLIST));
+                                                            .PLAYLIST),
+                                                    playlistid: playlistController
+                                                        .playlist
+                                                        .value
+                                                        .playlistId);
                                               },
                                               icon: Icon(
                                                 Icons.shuffle,
@@ -700,7 +708,11 @@ class PlaylistScreen extends StatelessWidget {
                                         playfrom: PlaylingFrom(
                                             name: playlistController
                                                 .playlist.value.title,
-                                            type: PlaylingFromType.PLAYLIST));
+                                            type: PlaylingFromType.PLAYLIST),
+                                        playlistid: playlistController
+                                            .playlist
+                                            .value
+                                            .playlistId);
                                   },
                                   song: playlistController.songList[index - 3],
                                   isPlaylistOrAlbum: true,

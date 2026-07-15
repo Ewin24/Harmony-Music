@@ -10,6 +10,7 @@ import '../../utils/helper.dart';
 import '../widgets/snackbar.dart';
 import '../widgets/up_next_queue.dart';
 import '/ui/player/player_controller.dart';
+import '/ui/navigator.dart';
 import '../widgets/sliding_up_panel.dart';
 
 /// Player screen
@@ -167,6 +168,43 @@ class Player extends StatelessWidget {
                                       child: Icon(Icons.shuffle,
                                           color: Colors.black)),
                                 ),
+                              ),
+
+                              /// view playlist button (only visible when playing from a playlist)
+                              Obx(
+                                () => playerController.sourcePlaylistId.value !=
+                                        null
+                                    ? InkWell(
+                                        onTap: () {
+                                          Get.toNamed(
+                                            ScreenNavigationSetup
+                                                .playlistScreen,
+                                            id: ScreenNavigationSetup.id,
+                                            arguments: [
+                                              null,
+                                              playerController
+                                                  .sourcePlaylistId.value
+                                            ],
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          padding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 15),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Colors.white.withValues(alpha: 0.8),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Center(
+                                              child: Icon(
+                                                  Icons.playlist_play,
+                                                  color: Colors.black)),
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
                               ),
 
                               /// clear queue button
