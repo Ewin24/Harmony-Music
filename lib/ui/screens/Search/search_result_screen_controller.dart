@@ -19,6 +19,7 @@ class SearchResultScreenController extends GetxController
   final separatedResultContent = <String, dynamic>{}.obs;
   final musicServices = Get.find<MusicServices>();
   final queryString = ''.obs;
+  final searchFieldController = TextEditingController();
   final railItems = <String>[].obs;
   final railitemHeight = Get.size.height.obs;
   final additionalParamNext = {};
@@ -99,6 +100,7 @@ class SearchResultScreenController extends GetxController
     final args = Get.arguments;
     if (args != null) {
       queryString.value = args;
+      searchFieldController.text = args;
       DebugLogger.info(_ctrlLogTag, '_getInitSearchResult: query="$args"');
       resultContent.value = await musicServices.search(args);
 
@@ -166,6 +168,81 @@ class SearchResultScreenController extends GetxController
     }
   }
 
+  Future<void> searchWithQuery(String newQuery) async {
+    isResultContentFetced.value = false;
+    queryString.value = newQuery;
+    searchFieldController.text = newQuery;
+    DebugLogger.info(_ctrlLogTag, 'searchWithQuery: query="$newQuery"');
+
+    resultContent.value = await musicServices.search(newQuery);
+
+    // Diagnostic: full key/count breakdown of the resultContent map.
+    final breakdown = <String, int>{};
+    resultContent.forEach((k, v) {
+      if (k == 'searchEndpoint' || k == 'params') {
+        breakdown[k] = v is Map ? v.length : 0;
+      } else {
+        breakdown[k] = v is List ? v.length : 0;
+      }
+    });
+    DebugLogger.info(
+      _ctrlLogTag,
+      'resultContent received: keys=${resultContent.keys.toList()} '
+      'breakdown=$breakdown',
+    );
+
+    final allKeys = resultContent.keys.where((element) => ([
+          "Songs",
+          "Videos",
+          "Albums",
+          "Featured playlists",
+          "Community playlists",
+          "Artists"
+        ]).contains(element));
+    railItems.value = List<String>.from(allKeys);
+    DebugLogger.info(
+      _ctrlLogTag,
+      'railItems (after filter) = $railItems',
+    );
+    final len =
+        railItems.where((element) => element.contains("playlists")).length;
+    final calH = 30 + (railItems.length + 1 - len) * 123 + len * 150.0;
+    railitemHeight.value =
+        calH >= railitemHeight.value ? calH : railitemHeight.value;
+
+    // Reset scroll controllers for the new result set
+    for (final item in railItems) {
+      scrollControllers[item]?.dispose();
+    }
+    scrollControllers.clear();
+    for (String item in railItems) {
+      scrollControllers[item] = ScrollController();
+    }
+
+    // Case if bottom nav used
+    if (GetPlatform.isDesktop ||
+        Get.find<SettingsScreenController>().isBottomNavBarEnabled.isTrue) {
+      separatedResultContent.clear();
+      for (var element in railItems) {
+        separatedResultContent[element] = [];
+      }
+
+      tabController?.dispose();
+      tabController =
+          TabController(length: railItems.length + 1, vsync: this);
+      tabController?.animation?.addListener(() {
+        int indexChange = tabController!.offset.round();
+        int index = tabController!.index + indexChange;
+
+        if (index != navigationRailCurrentIndex.value) {
+          onDestinationSelected(index, ignoreTabCommand: true);
+        }
+      });
+    }
+
+    isResultContentFetced.value = true;
+  }
+
   void onSort(SortType sortType, bool isAscending, String title) {
     if (title == "Songs" || title == "Videos") {
       final songList = separatedResultContent[title].toList();
@@ -191,6 +268,7 @@ class SearchResultScreenController extends GetxController
     for (String item in railItems) {
       (scrollControllers[item])!.dispose();
     }
+    searchFieldController.dispose();
     Get.find<HomeScreenController>().whenHomeScreenOnTop();
     tabController?.dispose();
     super.onClose();

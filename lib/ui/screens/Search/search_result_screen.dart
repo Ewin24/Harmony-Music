@@ -6,6 +6,7 @@ import '/ui/screens/Settings/settings_screen_controller.dart';
 import '../../navigator.dart';
 import '../../widgets/animated_screen_transition.dart';
 import '../../widgets/loader.dart';
+import '../../widgets/modified_text_field.dart';
 import '../../widgets/search_related_widgets.dart';
 import '../../widgets/separate_tab_item_widget.dart';
 import 'search_result_screen_controller.dart';
@@ -77,19 +78,48 @@ class SearchResultScreen extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: GetX<SearchResultScreenController>(
-                    builder: (controller) => AnimatedScreenTransition(
-                      enabled: Get.find<SettingsScreenController>()
-                          .isTransitionAnimationDisabled
-                          .isFalse,
-                      resverse: controller.isTabTransitionReversed,
-                      child: Center(
-                        key: ValueKey<int>(
-                            controller.navigationRailCurrentIndex.toInt() * 8),
-                        child: Body(
-                            searchResScrController: searchResScrController),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                        child: ModifiedTextField(
+                          controller:
+                              searchResScrController.searchFieldController,
+                          textInputAction: TextInputAction.search,
+                          onSubmitted: (val) {
+                            if (val.trim().isNotEmpty) {
+                              searchResScrController.searchWithQuery(
+                                  val.trim());
+                            }
+                          },
+                          decoration: InputDecoration(
+                            hintText: "searchDes".tr,
+                            border: const OutlineInputBorder(),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
+                            isDense: true,
+                          ),
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        child: GetX<SearchResultScreenController>(
+                          builder: (controller) => AnimatedScreenTransition(
+                            enabled: Get.find<SettingsScreenController>()
+                                .isTransitionAnimationDisabled
+                                .isFalse,
+                            resverse: controller.isTabTransitionReversed,
+                            child: Body(
+                              key: ValueKey<int>(controller
+                                  .navigationRailCurrentIndex
+                                  .toInt()
+                                  * 8),
+                              searchResScrController:
+                                  searchResScrController,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 )
               ],

@@ -5,6 +5,7 @@ import 'package:harmonymusic/ui/widgets/loader.dart';
 import 'package:harmonymusic/ui/widgets/search_related_widgets.dart';
 
 import '../../navigator.dart';
+import '../../widgets/modified_text_field.dart';
 import '../../widgets/separate_tab_item_widget.dart';
 import 'search_result_screen_controller.dart';
 
@@ -47,13 +48,20 @@ class SearchResultScreenBN extends StatelessWidget {
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Obx(
-                        () => Text(
-                          "${"for1".tr} \"${searchResScrController.queryString.value}\"",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
+                    ModifiedTextField(
+                      controller:
+                          searchResScrController.searchFieldController,
+                      textInputAction: TextInputAction.search,
+                      onSubmitted: (val) {
+                        if (val.trim().isNotEmpty) {
+                          searchResScrController.searchWithQuery(val.trim());
+                        }
+                      },
+                      decoration: InputDecoration(
+                        hintText: "searchDes".tr,
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
                       ),
                     ),
                   ]))
