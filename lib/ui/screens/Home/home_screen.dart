@@ -226,6 +226,21 @@ class Body extends StatelessWidget {
                                     playerController: playerController,
                                   );
                                 }),
+                                // Last session playlist
+                                Obx(() {
+                                  if (homeScreenController
+                                          .restoredSessionQueue.length <=
+                                      1) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return _LastSessionPlaylist(
+                                    songs: homeScreenController
+                                        .restoredSessionQueue
+                                        .take(10)
+                                        .toList(),
+                                    playerController: playerController,
+                                  );
+                                }),
                                 Obx(() {
                                   final scrollController = ScrollController();
                                   homeScreenController.contentScrollControllers
@@ -354,6 +369,74 @@ class _ContinuePlayingCard extends StatelessWidget {
           onTap: () => playerController.resumePlayback(),
         ),
       ),
+    );
+  }
+}
+
+class _LastSessionPlaylist extends StatelessWidget {
+  final List<MediaItem> songs;
+  final PlayerController playerController;
+
+  const _LastSessionPlaylist({
+    required this.songs,
+    required this.playerController,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+          child: Text(
+            'Last session',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+        SizedBox(
+          height: 120,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: songs.length,
+            itemBuilder: (context, index) {
+              final song = songs[index];
+              return GestureDetector(
+                onTap: () =>
+                    playerController.playSongFromMediaItem(song),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ImageWidget(song: song, size: 60),
+                      const SizedBox(height: 4),
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          song.title,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          song.artist ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 8),
+      ],
     );
   }
 }

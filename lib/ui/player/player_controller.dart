@@ -60,6 +60,8 @@ class PlayerController extends GetxController
   final currentSong = Rxn<MediaItem>();
   final isCurrentSongFav = false.obs;
   final playinfrom = PlaylingFrom(type: PlaylingFromType.SELECTION).obs;
+  final sourcePlaylistId = Rxn<String>();
+  final sourcePlaylistTitle = Rxn<String>();
   final showLyricsflag = false.obs;
   final isLyricsLoading = false.obs;
   final lyricsMode = 0.obs;
@@ -377,6 +379,8 @@ class PlayerController extends GetxController
   }
 
   Future<void> playSongFromMediaItem(MediaItem song) async {
+    sourcePlaylistId.value = null;
+    sourcePlaylistTitle.value = null;
     await playPlayListSong([song], 0);
   }
 
@@ -396,6 +400,15 @@ class PlayerController extends GetxController
     playinfrom.value = PlaylingFrom(
         type: PlaylingFromType.SELECTION,
         name: radio ? "randomRadio".tr : "randomSelection".tr);
+
+    /// track playlist source for "View playlist" button
+    if (playlistid != null) {
+      sourcePlaylistId.value = playlistid;
+      sourcePlaylistTitle.value = playinfrom.value.name;
+    } else {
+      sourcePlaylistId.value = null;
+      sourcePlaylistTitle.value = null;
+    }
 
     /// set global radio mode flag
     isRadioModeOn = radio;
@@ -450,13 +463,24 @@ class PlayerController extends GetxController
   }
 
   Future<void> playPlayListSong(List<MediaItem> mediaItems, int index,
-      {PlaylingFrom? playfrom}) async {
+      {PlaylingFrom? playfrom, String? playlistid}) async {
     isRadioModeOn = false;
     //open player pane,set current song and push first song into playing list,
 
     /// update playing from value
     playinfrom.value =
         playfrom ?? PlaylingFrom(type: PlaylingFromType.SELECTION);
+
+    /// track playlist source for "View playlist" button
+    if (playfrom?.type == PlaylingFromType.PLAYLIST) {
+      if (playlistid != null) {
+        sourcePlaylistId.value = playlistid;
+        sourcePlaylistTitle.value = playfrom?.name ?? '';
+      }
+    } else {
+      sourcePlaylistId.value = null;
+      sourcePlaylistTitle.value = null;
+    }
 
     //for changing home content based on last interation
     Future.delayed(const Duration(seconds: 3), () {
@@ -594,6 +618,8 @@ class PlayerController extends GetxController
   }
 
   void clearQueue() {
+    sourcePlaylistId.value = null;
+    sourcePlaylistTitle.value = null;
     _audioHandler.customAction("clearQueue");
   }
 
