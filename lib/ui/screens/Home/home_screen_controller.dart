@@ -249,18 +249,28 @@ class HomeScreenController extends GetxController {
     QuickPicks? quickPicks_;
     if (val == 'QP') {
       final homeContentListMap = await _musicServices.getHome(limit: 3);
-      quickPicks_ = QuickPicks(
-          List<MediaItem>.from(homeContentListMap[0]["contents"]),
-          title: homeContentListMap[0]["title"]);
+      if (homeContentListMap.isNotEmpty) {
+        final contents = homeContentListMap[0]["contents"];
+        if (contents != null) {
+          quickPicks_ = QuickPicks(
+              List<MediaItem>.from(contents),
+              title: homeContentListMap[0]["title"]);
+        }
+      }
     } else if (val == "TMV" || val == 'TR') {
       try {
         final charts = await _musicServices.getCharts(val);
         final index = charts.indexWhere((element) =>
             element['title'] ==
             (val == "TMV" ? "Top Music Videos" : "Trending"));
-        quickPicks_ = QuickPicks(
-            List<MediaItem>.from(charts[index]["contents"]),
-            title: charts[index]["title"]);
+        if (index != -1) {
+          final contents = charts[index]["contents"];
+          if (contents != null) {
+            quickPicks_ = QuickPicks(
+                List<MediaItem>.from(contents),
+                title: charts[index]["title"]);
+          }
+        }
       } catch (e) {
         printERROR(
             "Seems ${val == "TMV" ? "Top music videos" : "Trending songs"} currently not available!");
@@ -273,9 +283,12 @@ class HomeScreenController extends GetxController {
               songId, getContentHlCode());
           middleContent.value = _setContentList(value);
           if (value.isNotEmpty && (value[0]['title']).contains("like")) {
-            quickPicks_ =
-                QuickPicks(List<MediaItem>.from(value[0]["contents"]));
-            Hive.box("AppPrefs").put("recentSongId", songId);
+            final contents = value[0]["contents"];
+            if (contents != null) {
+              quickPicks_ =
+                  QuickPicks(List<MediaItem>.from(contents));
+              Hive.box("AppPrefs").put("recentSongId", songId);
+            }
           }
           // ignore: empty_catches
         } catch (e) {}
