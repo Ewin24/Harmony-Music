@@ -790,28 +790,26 @@ class DiscoverContentSelectorDialog extends StatelessWidget {
           SizedBox(
             height: 180,
             child: SingleChildScrollView(
-              child: RadioGroup<String>(
-                groupValue: settingsController.discoverContentType.value,
-                onChanged: settingsController.onContentChange,
-                child: Column(
-                  children: [
-                    radioWidget(
-                        label: "quickpicks".tr,
-                        controller: settingsController,
-                        value: "QP"),
-                    radioWidget(
-                        label: "topmusicvideos".tr,
-                        controller: settingsController,
-                        value: "TMV"),
-                    radioWidget(
-                        label: "trending".tr,
-                        controller: settingsController,
-                        value: "TR"),
-                    radioWidget(
-                        label: "basedOnLast".tr,
-                        controller: settingsController,
-                        value: "BOLI"),
-                  ],
+              child: Obx(
+                () => RadioGroup<String>(
+                  groupValue: settingsController.discoverContentType.value,
+                  onChanged: settingsController.onContentChange,
+                  child: Column(
+                    children: [
+                      radioWidget(
+                          label: "quickpicks".tr,
+                          value: "QP"),
+                      radioWidget(
+                          label: "topmusicvideos".tr,
+                          value: "TMV"),
+                      radioWidget(
+                          label: "trending".tr,
+                          value: "TR"),
+                      radioWidget(
+                          label: "basedOnLast".tr,
+                          value: "BOLI"),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -832,17 +830,18 @@ class DiscoverContentSelectorDialog extends StatelessWidget {
   }
 }
 
-Widget radioWidget(
-    {required String label,
-    required SettingsScreenController controller,
+Widget radioWidget({
+    required String label,
+    SettingsScreenController? controller,
     required value}) {
   return ListTile(
         visualDensity: const VisualDensity(vertical: -4),
         onTap: () {
           if (value.runtimeType == ThemeType) {
-            controller.onThemeChange(value);
+            controller?.onThemeChange(value);
           } else {
-            controller.onContentChange(value);
+            (controller ?? Get.find<SettingsScreenController>())
+                .onContentChange(value);
             Navigator.of(Get.context!).pop();
           }
         },
