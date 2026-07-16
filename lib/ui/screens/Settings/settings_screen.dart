@@ -836,7 +836,7 @@ Widget radioWidget(
     {required String label,
     required SettingsScreenController controller,
     required value}) {
-  return Obx(() => ListTile(
+  return ListTile(
         visualDensity: const VisualDensity(vertical: -4),
         onTap: () {
           if (value.runtimeType == ThemeType) {
@@ -848,5 +848,5 @@ Widget radioWidget(
         },
         leading: Radio(value: value),
         title: Text(label),
-      ));
+      );
 }
